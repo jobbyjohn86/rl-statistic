@@ -1,0 +1,136 @@
+<div class="ticker">
+
+  <!-- <ngx-skeleton-loader count="2" appearance='line' style="width: 100%;" *ngIf="data.length==0"></ngx-skeleton-loader> -->
+
+  <div class="middle">
+    <div class="header">
+      <div class="title">
+        {{ titleText }}
+        <span class="icon-cog" (click)="onIconClick()">
+        </span>
+      </div>
+
+      <div class="growth">
+        <div *ngIf="percentage !== 0" class="percentage" [class]="percentage > 0 ? 'positive': 'negative'">
+          <div [class]="'dx-icon-'+ (percentage > 0 ? 'spinup' : 'spindown')"></div>
+          <i class="value"></i>
+          <span>{{ abs(percentage) }}%</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="info" style="margin-top: 10px;">
+      <div class="total  container">
+        <div class="row" *ngIf="titleText=='Sales'">
+          <div class="column">Target</div>
+          <div class="column">Achievement</div>
+        </div>
+
+        <!-- <div class="row" *ngIf="titleText !=='Sales'" style="height: 20px;">
+          <div class="column"></div>
+          <div class="column"></div>
+        </div> -->
+
+        <div class="row" *ngIf="titleText=='Sales'">
+          <div class="column sub-title">{{customInrFormat(dataDetail[0]?.value)}}</div>
+          <div class="column sub-title">{{customInrFormat(dataDetail[1]?.value)}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="total">
+      {{
+      total === null
+      ? (getTotal | apply: data | currency: 'INR':'₹':'1.0-0')
+      : total
+      }}
+    </div> -->
+
+
+    <div class="info" *ngIf="titleText !=='Sales'">
+      <div class="container" style="padding-top: 6px;">
+        <div class="row row-line">
+          <div class="column col-header" style="text-align: right;" *ngFor="let item of ['','Invoice','Amount']">
+            {{item}} </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="titleText !=='Sales'" style="height: 20px;">
+      <div class="column"></div>
+      <div class="column"></div>
+    </div>
+
+
+    <div class="info" style="padding-top: 10px;">
+      <!-- {{item['name']}} <span class="right">{{(item['value'] | currency: 'INR':'₹ ':'1.0-0')}}</span> -->
+      <div class="container" *ngFor="let item of dataDetail | slice:1:4">
+        <div class="row">
+          <div class="column">{{item['name']}}</div>
+          <div class="column" style="padding-right: 8px">{{getNumberFormat(item['count'])}}</div>
+          <!-- <div class="column">{{getCurrencyValue(item['value'])}}</div> -->
+          <div class="column">{{customInrFormat(item['value'])}}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- <div class="info" *ngIf="dataDetail.length<4">
+      <br *ngFor="let item of blankRow"  class="right" style="line-height:20px;">
+    </div> -->
+
+    <!-- <div class="info" *ngIf="dataDetail.length<4">
+      <br   class="right" style="line-height:20px;">
+    </div> -->
+
+
+    <div class="footer-box">
+      <!-- <div class="lp-9">{{footerText}} {{count}} </div> -->
+      <div class="lp-9">{{footerText}} {{count>0? count:''}} </div>
+      <div class="menu">
+        <div class="info">
+          <div>
+            <card-view [visible]="isDetailsVisible" [items]="detailsItems" [class]="isMenuVisible ==false ? 'right': ''"
+              [dataSource]="detailsItems" [columns]="columns"></card-view>
+            <card-menu [visible]="isMenuVisible" [items]="menuItems" [class]="isMenuVisible ==true ? 'right': ''">
+            </card-menu>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- <div *ngIf="percentage !== 0" class="percentage" [class]="percentage > 0 ? 'positive': 'negative'">
+    <div [class]="'dx-icon-'+ (percentage > 0 ? 'spinup' : 'spindown')"></div>
+    <i class="value"></i>
+    <span>{{ abs(percentage) }}%</span>
+  </div> -->
+
+
+
+</div>
+
+
+
+<dx-popup [visible]="isDateRangeVisble" title="Select Date Range" [width]="400" [height]="220" [showCloseButton]="true"
+  (onHiding)="onPopupHiding($event)">
+  <div (click)="onDateContainerClick($event, dateRangeBox)">
+    <dx-date-range-box #dateRangeBox displayFormat="dd/MM/yyyy" [startDate]="startDate" [endDate]="endDate"
+      [showClearButton]="true" [useMaskBehavior]="true" [openOnFieldClick]="false"
+      (onValueChanged)="handleValueChange($event)" timezone="Asia/Calcutta">
+    </dx-date-range-box>
+  </div>
+
+
+  <div class="full-width-button">
+    <dx-button text="Save" type="default" (onClick)="onSaveClick()" style="background: rgb(128, 128, 128);"></dx-button>
+  </div>
+</dx-popup>
+
+<!-- <div class="item">
+  <ngx-skeleton-loader count="5" appearance="line" />
+</div> -->

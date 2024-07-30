@@ -1,0 +1,76 @@
+// @use "../../../../variables.scss" as *;
+// @use "sass:math";
+
+// .sales-filter {
+//   display: inline-block;
+// }
+
+// ::ng-deep #pie {
+//   height: 250px;
+// }
+// // ::ng-deep #pie {
+// //   // height: 440px;
+// //   height: 100%;
+// //   width: 100%;
+// // }
+
+
+// ::ng-deep #pie * {
+//   margin: 0 auto;
+// }
+
+
+// #chart {
+//   height: 250px;
+//   // width: 250px;
+//   // max-width: 900px;
+//   margin: auto;
+// }
+
+
+
+
+// ::ng-deep .pies-container {
+//   margin: auto;
+//   width: 800px;
+// }
+
+// ::ng-deep .pies-container > .pie {
+//   width: 330px;
+//   float: left;
+// }
+
+
+
+@use "../../../../variables.scss" as *;
+@use "sass:math";
+
+.sales-filter {
+  display: inline-block;
+}
+
+::ng-deep #pie {
+  height: 250px;
+}
+// ::ng-deep #pie {
+//   // height: 440px;
+//   height: 100%;
+//   width: 100%;
+// }
+
+
+::ng-deep #pie * {
+  margin: 0 auto;
+}
+
+
+#chart {
+  // height: 350px;
+  height: 100%;
+  // width: 250px;
+  // max-width: 900px;
+  margin: auto;
+}
+
+
+

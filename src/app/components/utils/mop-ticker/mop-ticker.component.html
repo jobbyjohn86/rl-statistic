@@ -1,0 +1,26 @@
+<!-- <ticker-card-simple
+  titleText="Payment Mode"
+  [data]="data"
+  [percentage]="0"
+  icon="datapie"
+  [isContent]="isContent"
+  [isMenuVisible]="false"
+  [count]="count"
+  [isDetailsVisible]="true"
+  [isMenuVisible]="false"
+></ticker-card-simple> -->
+
+<ticker-card-simple
+  titleText="Payment Mode"
+  [data]="data"
+  [percentage]="0"
+  icon="dataarea"
+  [count]="count"
+  [details]="dataDetail"
+  [isDetailsVisible]="true"
+  [isMenuVisible]="false"
+  [footerText]="footerText"
+  [columns]="columns"
+  [cardColumns]="cardColumns"
+  (cardSettingClick)="cardSettingClick($event)"
+></ticker-card-simple>

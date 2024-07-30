@@ -1,0 +1,261 @@
+@use "../../../variables.scss" as *;
+@use "sass:math";
+
+.toolbar-header {
+  @include header();
+}
+
+@media only screen and (max-width: 400px) {
+  ::ng-deep .dx-tab {
+    min-width: 70px;
+  }
+
+  .toolbar-header {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .toolbar-header {
+    font-size: 14px;
+  }
+}
+
+
+
+
+/* custom-item.component.css */
+.custom-item {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: white;
+  cursor: move;
+}
+
+/* drag-drop.component.css */
+.container {
+  display: flex;
+}
+
+.list-container {
+  width: 30%;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+  padding-left: 0px;
+  height: 610px;
+}
+
+.canvas-container {
+  width: 70%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-right: 0px;
+}
+
+.row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.column {
+  flex: 1;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  min-height: 100px;
+  margin-right: 10px;
+  position: relative;
+}
+
+.column:last-child {
+  margin-right: 0;
+}
+
+
+.scrollable-list {
+  height: 450px;
+  width: 300px;
+  background-color: rgba(192, 192, 192, 0.4);
+}
+
+.sortable-cards {
+  display: block;
+  min-height: 380px;
+}
+
+
+::ng-deep .dx-item .dx-list-item {
+  height: 50px !important;
+  /* Adjust the height value as needed */
+  line-height: 50px;
+  /* Center text vertically */
+}
+
+
+.custom-list-item {
+  height: 50px;
+  /* Set your desired height */
+  // line-height: 50px; /* Center text vertically if needed */
+  display: flex;
+  align-content: space-around;
+  align-items: center;
+  height: 75px;
+}
+
+
+
+::ng-deep .dx-list-items .dx-state-hover {
+  background-color: transparent;
+  color: red;
+}
+
+::ng-deep .dx-list-items {
+  row-gap: 15px;
+}
+
+::ng-deep .dx-list-item {
+  border: solid #cbc8c8;
+  height: 60px;
+}
+
+::ng-deep .dx-list-item:first-of-type {
+  border-top: solid #cbc8c8;
+  height: 60px;
+}
+
+::ng-deep .dx-list-item:last-of-type {
+  border-bottom: solid #cbc8c8;
+  height: 60px;
+}
+
+::ng-deep .dx-list-item-after-bag {
+  align-items: center;
+  display: flex;
+}
+
+.column-green {
+  background: darkseagreen;
+}
+
+.list-item-canvas {
+  height: 30px;
+}
+
+// ::ng-deep .dx-row .dx-header-row{
+//   text-align: center;
+// }
+
+// ::ng-deep .dx-datagrid-rowsview .dx-row > td:first-child {
+//   // background-color: #98b9f3; /* Change this to your desired background color */
+//   color: #333; /* Change this to your desired text color */
+// }
+
+// .dx-datagrid-headers .dx-header-row .dx-datagrid-action {
+//   background-color: #98b9f3;/* Change this to your desired background color */
+//   color: #333; /* Change this to your desired text color */
+// }
+
+::ng-deep .dx-datagrid {
+  font-size: 12px;
+  /* Adjust the font size for a more compact view */
+}
+
+// ::ng-deep .dx-datagrid-headers .dx-header-row .dx-datagrid-action {
+//   padding: 5px 10px;
+//   /* Reduce padding for header cells */
+//   background-color: #f5f5f5;
+//   /* Optional: Change header background color */
+//   color: #333;
+//   /* Optional: Change header text color */
+// }
+
+::ng-deep .dx-datagrid-rowsview .dx-row {
+  height: 25px;
+  /* Reduce row height */
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row>td {
+  padding: 5px 10px;
+  /* Reduce padding for row cells */
+}
+
+
+// ::ng-deep .dx-datagrid .dx-header-row .dx-datagrid-action {
+//   background-color: #4CAF50;
+//   /* Change this to your desired background color */
+//   color: white !important;
+//   /* Optional: Change the text color to ensure readability */
+// }
+
+// ::ng-deep .dx-datagrid .dx-header-row .dx-datagrid-action:hover {
+//   background-color: #4CAF50 !important;
+//   /* Maintain the same background color on hover */
+//   color: white !important;
+//   /* Maintain the same text color on hover */
+// }
+
+// ::ng-deep .dx-datagrid .dx-header-row .dx-datagrid-action.dx-cell-modified {
+//   background-color: #4CAF50 !important;
+//   /* Ensure consistency for modified header cells */
+//   color: white !important;
+//   /* Ensure readability for modified header cells */
+// }
+
+
+// .no-data-message {
+//   height: 300px; /* or any desired height */
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 16px;
+//   color: grey;
+// }
+
+
+// ::ng-deep .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row>td:not(.dx-validation-pending):not(.dx-datagrid-select-all),
+// .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row>td.dx-cell-modified:not(.dx-field-item-content):not(.dx-validation-pending),
+// .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row>td.dx-datagrid-invalid:not(.dx-field-item-content):not(.dx-validation-pending):not(.dx-datagrid-select-all) {
+//   display: flex;
+//   justify-content: center;
+// }
+
+// ::ng-deep .dx-row .dx-header-row, .dx-cell-focus-disabled{
+//   display: flex;
+//   justify-content: center;
+// }
+
+// :ng-deep .dx-list-item-content {
+//   background: #03A9F4 !important;
+//   height: 50px;
+//   row-gap: 20px;
+// }
+
+// #listContainer .dx-list-item-drag-handle {
+//   display: none !important;
+// }
+
+// .custom-drag-template {
+//   /* Custom styles for the drag template */
+//   background-color: #f0f0f0;
+//   border: 1px solid #ccc;
+//   padding: 10px;
+//   margin: -4px; /* Adjust margin to avoid displacement during drag */
+// }
+
+
+
+// ::ng-deep .widget-container {
+//   display: flex;
+// }
+
+// ::ng-deep .widget-container > * {
+//   height: 400px;
+//   width: 50%;
+//   padding: 10px;
+// }
+
+// ::ng-deep .dx-scrollview-content {
+//   min-height: 380px;
+// }

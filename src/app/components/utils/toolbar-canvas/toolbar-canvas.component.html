@@ -1,0 +1,63 @@
+<dx-toolbar class="theme-dependent">
+  <dxi-item location="before">
+    <span class="toolbar-header">{{ titleText }}</span>
+  </dxi-item>
+
+
+  <!-- <dxi-item location="before" widget="dxDropDownBox" locateInMenu="auto" cssClass="global-search-box" clearable="false"
+    [options]="{
+    stylingMode: 'filled',
+    mode: 'search',
+    placeholder: 'Canvas Layout',
+    width: 180,
+    items:canvastypes,
+    valueExpr: 'value',
+    displayExpr: 'name',
+    value: 0,
+    showClearButton:false,
+    onValueChanged:typeChange
+  }">
+  </dxi-item> -->
+
+  <dxi-item location="before" widget="dxDropDownButton" locateInMenu="auto" cssClass="global-search-box" [options]="{
+     items:canvastypes,
+     stylingMode:'outlined',
+     width: 230,
+     displayExpr:'name',
+     keyExpr:'id',
+     splitButton:true,
+     useSelectMode:true,
+     selectedItemKey:'1',
+     onSelectionChanged:typeChange
+  }">
+
+  </dxi-item>
+
+
+
+
+
+  <dxi-item location="after" locateInMenu="auto">
+    <dx-button class="add-card" icon="plus" text="New" type="default" stylingMode="outlined"
+      (onClick)="create()"></dx-button>
+  </dxi-item>
+
+  <dxi-item location="after" locateInMenu="auto">
+    <dx-button class="add-card" icon="folder" text="Open" type="normal" stylingMode="outlined"
+      (onClick)="open()"></dx-button>
+  </dxi-item>
+
+
+  <dxi-item location="after" locateInMenu="auto">
+    <dx-button class="add-card" icon="save" text="Save" type="success" stylingMode="outlined"
+      (onClick)="save($event)"></dx-button>
+  </dxi-item>
+
+
+
+
+
+
+</dx-toolbar>
+
+<app-access [isAccessRequired]="isAccessRequired"></app-access>

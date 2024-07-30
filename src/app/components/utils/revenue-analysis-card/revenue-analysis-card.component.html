@@ -1,0 +1,94 @@
+
+
+
+
+<card-analytics  [isLoading]="this.isPageLoading" titleText="Location Insight" contentClass="sales-by-state grid" style="display: grid; width: 100%; gap: 20px;" [isMenuVisible]="true" (menuClick)="onMenuClick($event)" (cardDateRangeClick)="onDateRangeClick($event)" >
+
+
+  <!-- <dx-data-grid id="grid" [dataSource]="data" keyExpr="LocationID" [columnWidth]="100" [showBorders]="true">
+    <dxo-paging [enabled]="false"></dxo-paging>
+    <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+  </dx-data-grid> -->
+
+
+  <!-- <dx-data-grid id="grid" [dataSource]="data" keyExpr="field1" [columnWidth]="100" [showBorders]="true">
+    <dxo-paging [enabled]="false"></dxo-paging>
+    <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+  </dx-data-grid> -->
+
+
+
+
+
+
+  <dx-data-grid id="grid" [dataSource]="data" [height]="290" [loadPanel]="{ enabled: true }" [columnAutoWidth]="false" [columnWidth]="130" [columnAutoWidth]="true" [showBorders]="true">
+    <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+    <dxo-paging [enabled]="false"></dxo-paging>
+
+    <dxi-column caption="State" dataField="StateName" [fixed]="true" fixedPosition="left" [width]="150" [groupIndex]="0"> </dxi-column>
+
+    <dxi-column caption="Location" dataField="LocationName" [fixed]="true" fixedPosition="left" [width]="170"> </dxi-column>
+
+    <dxi-column alignment="right" caption="Orders" dataField="Orders" dataType="number">
+    </dxi-column>
+
+    <dxi-column alignment="right" caption="GrossSale" dataField="GrossSales" dataType="number" >
+    </dxi-column>
+    <dxi-column alignment="right" caption="Discount" dataField="Disc" dataType="number" >
+    </dxi-column>
+
+    <dxi-column alignment="right" caption="Tax" dataField="Tax" dataType="number" >
+    </dxi-column>
+    <dxi-column alignment="right" caption="R/O Amt" dataField="ROAmt" dataType="number" >
+    </dxi-column>
+
+    <dxi-column alignment="right" caption="Net Sale" dataField="NetSales" dataType="number" >
+    </dxi-column>
+    <dxi-column alignment="right" caption="Expense" dataField="Expense" dataType="number" >
+    </dxi-column>
+
+    <dxi-column alignment="right" caption="COGS" dataField="COGS" dataType="number">
+    </dxi-column>
+    <dxi-column alignment="right" caption="Feedback" dataField="Feedback" dataType="number">
+    </dxi-column>
+    <dxi-column alignment="right" caption="Orders" dataField="Orders" dataType="number">
+    </dxi-column>
+    <dxi-column alignment="right" caption="Ticket Size" dataField="TicketSize" dataType="number">
+    </dxi-column>
+    <dxi-column alignment="right" caption="Voids" dataField="Void" dataType="number">
+    </dxi-column>
+    
+    <dxi-column alignment="right" caption="RePrint" dataField="RePrint" dataType="number">
+    </dxi-column>
+
+    <dxi-column alignment="right" caption="Cont(%)" [calculateCellValue]="calcualateContr" dataType="number">
+    </dxi-column>
+
+    <dxi-column alignment="right" caption="Rank" [calculateCellValue]="calcualateRank" dataType="number" sortOrder="asc">
+    </dxi-column>
+
+    <dxi-column alignment="left" caption="Last Sync" [calculateCellValue]="lastSync" dataType="string" [width]="150">
+    </dxi-column>
+
+
+  </dx-data-grid>
+
+</card-analytics>
+
+<!-- [hidingPriority]="2" -->
+
+    <!-- <dxi-column alignment="left" caption="Sales" dataField="sales" name="percentN" format="percent"
+      [hidingPriority]="1">
+    </dxi-column> -->
+
+    <!-- <dxi-column alignment="left" caption="Cont(%)" dataField="percentage" name="percentB" cellTemplate="salesBullet"
+      cssClass="sales-bullet" [width]="100">
+    </dxi-column> -->
+
+    <!-- <div *dxTemplate="let cellInfo of 'salesBullet'">
+      <dx-bullet [showTarget]="false" [showZeroLevel]="false" [value]="cellInfo.data.percentage * 100"
+        [startScaleValue]="0" [endScaleValue]="100">
+        <dxo-tooltip [enabled]="false"></dxo-tooltip>
+        <dxo-size [width]="200" [height]="20"></dxo-size>
+      </dx-bullet>
+    </div> -->

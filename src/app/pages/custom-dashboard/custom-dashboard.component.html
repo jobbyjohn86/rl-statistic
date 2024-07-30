@@ -1,0 +1,197 @@
+<dx-scroll-view class="view-wrapper-scroll">
+    <div class="view-wrapper">
+        <toolbar-canvas titleText="Canvas" (saveCanvas)="check4CanvasSave($event)"
+            (openCanvasList)="openCanvasList()" (createCanvas)="newCanvas()" (canvasTypeChanged)="onCanvasTypeChange($event)">
+        </toolbar-canvas>
+
+
+        <div class="container">
+            <div class="list-container" id="listContainer">
+                <dx-list keyExpr="id" displayExpr="name" [scrollByContent]="true" [useNativeScrolling]="true">
+                    <dxi-item [ngClass]="'custom-list-item'" *ngFor="let item of widgetlist">
+                        {{item.name}}
+                    </dxi-item>
+                    <dxo-item-dragging group="tasks" [data]="widgetlist" [allowReordering]="true"
+                        [onDragStart]="onDragStart" [onAdd]="onAdd" [onRemove]="onRemove" [onReorder]="onReorder">
+                    </dxo-item-dragging>
+                </dx-list>
+            </div>
+
+            <div class="canvas-container">
+
+                <div class="row" *ngFor="let row of canvasRows; let rowIndex = index">
+
+
+                    <dx-list class="column" *ngFor="let column of row.columns; let columnIndex = index" dx-item-dradding
+                        (data)="column.items" group="itemsGroup" [dataSource]="column.items" keyExpr="id"
+                        displayExpr="name" [items]="column.items" noDataText="" [ngClass]="getColumnClass(column.items)"
+                        noDataText="Place the Widget">
+
+
+                        <dxo-item-dragging group="tasks" [data]="column.items" [allowReordering]="true"
+                            [onDragStart]="onCDragStart" [onAdd]="onCAdd" [onRemove]="onCRemove"
+                            [onReorder]="onCReorder">
+                        </dxo-item-dragging>
+                    </dx-list>
+
+                    <!-- <app-custom-item></app-custom-item>  [ngClass]="'custom-list-item'"-->
+
+
+
+                    <!-- <div class="column" *ngFor="let column of row.columns; let columnIndex = index" dx-sortable
+                        (data)="column.items" group="itemsGroup">
+        
+                        <dx-list [dataSource]="column.items" keyExpr="id" displayExpr="name">
+                            <dxo-item-dragging group="tasks" [data]="column.items" [allowReordering]="true" [onDragStart]="onDragStart"
+                                [onAdd]="onAdd" [onRemove]="onRemove" [onReorder]="onReorder">
+                            </dxo-item-dragging>
+                        </dx-list>
+                    </div> -->
+                </div>
+
+
+                <!-- <dx-list [dataSource]="doingTasks" keyExpr="id" displayExpr="name">
+                    <dxo-item-dragging group="tasks" [data]="doingTasks" [allowReordering]="true" [onDragStart]="onDragStart"
+                        [onAdd]="onAdd" [onRemove]="onRemove" [onReorder]="onReorder">
+                    </dxo-item-dragging>
+                </dx-list> -->
+            </div>
+            <!-- 
+            <div>
+                <button>Save</button>
+            </div> -->
+        </div>
+
+
+    </div>
+
+
+
+
+    <!-- padding: 18px;
+    border: 1px solid #ccc; -->
+</dx-scroll-view>
+
+
+<dx-popup [width]="400" [height]="260" [showTitle]="true" title="Layout" [dragEnabled]="false"
+    [hideOnOutsideClick]="false" [showCloseButton]="false" container=".dx-viewport" [(visible)]="popupVisible">
+
+    <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="before" [options]="saveButtonOptions">
+    </dxi-toolbar-item>
+
+    <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="closeButtonOptions">
+    </dxi-toolbar-item>
+
+
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view width="100%" height="100%">
+            <form (submit)="submitcanvas($event)">
+                <dx-form id="form" [formData]="userForm" [colCount]="1" [showValidationSummary]="false"
+                    validationGroup="groupName" labelLocation="top">
+                    <dxi-item itemType="group" [colCount]="1" [colSpan]="1">
+                        <dxi-item dataField="layoutname" editorType="dxTextBox">
+                            <dxo-label text="Name"></dxo-label>
+                            <dxi-validation-rule type="required" message="Layout Name is Required">
+                            </dxi-validation-rule>
+                        </dxi-item>
+
+                        <dxi-item>
+                            <dx-check-box text="Default Layout" dataField="isdefault" [value]="userForm.isdefault"
+                            (onValueChanged)="onValueChanged($event)"></dx-check-box>
+                        </dxi-item>
+
+                    </dxi-item>
+
+                
+
+                </dx-form>
+            </form>
+        </dx-scroll-view>
+    </div>
+
+
+    <!-- <div *dxTemplate="let data of 'content'">
+
+        <div class="form">
+            <div class="dx-fieldset">
+                <div class="dx-field">
+                    <div class="dx-field-label">Layout Name</div>
+                    <div class="dx-field-value">
+                        <dx-text-box value="John Smith" [inputAttr]="{ 'aria-label': 'Name' }"></dx-text-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div> -->
+</dx-popup>
+
+
+<!-- Open the List of layout -->
+<dx-popup [width]="400" [height]="600" [showTitle]="true" title="Layout List" [dragEnabled]="false"
+    [hideOnOutsideClick]="false" [showCloseButton]="false" container=".dx-viewport" [(visible)]="popupOpenVisible">
+
+    <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="before" [options]="saveListButtonOptions">
+    </dxi-toolbar-item>
+
+    <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="closeListButtonOptions">
+    </dxi-toolbar-item>
+
+
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view width="100%" height="100%">
+
+            <dx-data-grid #grid id="gridContainer" [dataSource]="savedLayout" keyExpr="key" [showBorders]="true"
+                [rowAlternationEnabled]="true">
+                <dxo-selection mode="single"></dxo-selection>
+                <dxi-column dataField="key" caption="Layout" [allowSorting]="false"></dxi-column>
+
+                <!-- <dxi-column width="100" caption="Delete" [allowSorting]="false"></dxi-column> -->
+
+                <dxi-column type="buttons" caption="Action">
+                    <!-- <dxi-button name="edit" hint="Edit Information">
+                    </dxi-button>
+                    <dxi-button name="delete"></dxi-button> -->
+                    <dxi-button icon="trash" hint="Delete Layout" [onClick]="deleteLayout"></dxi-button>
+                </dxi-column>
+
+            </dx-data-grid>
+
+
+            <!-- <form (submit)="submitcanvas($event)">
+                <dx-form id="form" [formData]="userForm" [colCount]="1" [showValidationSummary]="false"
+                    validationGroup="groupName" labelLocation="top">
+                    <dxi-item itemType="group" [colCount]="1" [colSpan]="1">
+                        <dxi-item dataField="layoutname" editorType="dxTextBox">
+                            <dxo-label text="Name"></dxo-label>
+                            <dxi-validation-rule type="required" message="Layout Name is Required">
+                            </dxi-validation-rule>
+                        </dxi-item>
+                    </dxi-item>
+                </dx-form>
+            </form> -->
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+
+
+
+<!-- <div id="list-demo">
+    <div class="widget-container">
+        <dx-list [dataSource]="plannedTasks" keyExpr="id" displayExpr="name">
+            <dxo-item-dragging group="tasks" [data]="plannedTasks" [allowReordering]="true" [onDragStart]="onDragStart"
+                [onAdd]="onAdd" [onRemove]="onRemove" [onReorder]="onReorder">
+            </dxo-item-dragging>
+        </dx-list>
+
+        
+        <dx-list [dataSource]="doingTasks" keyExpr="id" displayExpr="name">
+            <dxo-item-dragging group="tasks" [data]="doingTasks" [allowReordering]="true" [onDragStart]="onDragStart"
+                [onAdd]="onAdd" [onRemove]="onRemove" [onReorder]="onReorder">
+            </dxo-item-dragging>
+        </dx-list>
+
+    </div>
+</div> -->

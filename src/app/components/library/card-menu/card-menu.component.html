@@ -1,0 +1,22 @@
+<dx-drop-down-button icon="overflow" class="overflow-menu" [showArrowIcon]="false" stylingMode="text"
+  [dropDownOptions]="{ width: 'auto' }" [items]="items" [visible]="visible" itemTemplate="fontItem" (onItemClick)="onMenuItemCLick($event)">
+
+  <div *dxTemplate="let data of 'fontItem'" style="display: inline-table;">
+    <b>{{data.name}}</b>
+    <span style="float: right;">
+      {{(data.value | currency: 'INR':'₹ ':'1.0-0')}}</span>
+  </div>
+
+  <!-- <div *dxTemplate="let data of 'fieldTemplate'">
+  <div class="custom-item">
+      <img src="{{data.image}}">
+      <div class="product-name">
+          <dx-text-box
+              [value]="data.text"
+              [readOnly]="true">
+          </dx-text-box>
+      </div>
+  </div>
+</div> -->
+
+</dx-drop-down-button>

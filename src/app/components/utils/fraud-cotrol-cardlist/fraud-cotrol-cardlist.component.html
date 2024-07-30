@@ -1,0 +1,63 @@
+<!-- <card-dynamic [cardOptions]="cardOptions"
+(cardDateRangeClick)="cardDateRangeClick($event)"
+></card-dynamic> -->
+
+<card-analytics [isLoading]="this.isPageLoading" titleText="Fraud Control" contentClass="sales-by-state grid" style="display: grid; width: 100%; gap: 20px;"
+    [isMenuVisible]="true" (menuClick)="onMenuClick($event)" [showDateRange]="showDateRange" 
+    (cardDateRangeClick)="cardDateRangeClick($event)">
+
+    <div class="cards-full">
+        <div class="info">
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[0]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[0]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[0]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[1]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[1]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[1]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[2]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[2]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[2]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[3]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[3]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[3]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[4]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[4]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[4]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[5]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[5]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[5]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[6]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[6]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[6]?.name}}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[7]?.count}}
+                </div>
+                <div class="info-content">{{ customInrFormat(fraudControlData[7]?.value )}}</div>
+                <div class="info-content">{{ fraudControlData[7]?.name}}</div>
+            </div>
+        </div>
+    </div>
+
+
+</card-analytics>

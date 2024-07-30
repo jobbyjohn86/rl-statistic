@@ -1,0 +1,13 @@
+<dx-popup [width]="350" [height]="180" [dragEnabled]="false" [visible]="isAccessRequired" [showTitle]="true"
+  [hideOnOutsideClick]="false" [showCloseButton]="false" title="Access Application" (onHidden)="onPopupHidden()">
+  <div *dxTemplate="let data of 'content'">
+    <dx-form [formData]="rcidForm">
+      <dxi-item dataField="value" [isRequired]="true">
+        <dxo-label text="RCID"></dxo-label>
+      </dxi-item>
+    </dx-form>
+    <div class="full-width-button">
+      <dx-button text="Save" type="default" (onClick)="onSaveRCID()"></dx-button>
+    </div>
+  </div>
+</dx-popup>

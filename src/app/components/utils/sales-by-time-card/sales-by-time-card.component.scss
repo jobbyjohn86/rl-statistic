@@ -1,0 +1,36 @@
+@use "../../../../variables.scss" as *;
+@use "sass:math";
+
+.sales-filter {
+  display: inline-block;
+}
+
+::ng-deep #pie {
+  height: 250px;
+}
+
+// ::ng-deep #pie {
+//   // height: 440px;
+//   height: 100%;
+//   width: 100%;
+// }
+
+
+::ng-deep #pie * {
+  margin: 0 auto;
+}
+
+
+#chart {
+  height: 250px;
+  // width: 250px;
+  // max-width: 900px;
+  margin: auto;
+}
+
+
+.empty {
+  background: url('../../../../assets/img/error.png') no-repeat;
+  // background: url(http://fr.rancelab.com/467/img/rl-nodata.png) no-repeat;
+  background-position: center;
+}

@@ -1,0 +1,39 @@
+<div class="card {{ contentClass }}">
+  <div class="header">
+    <!-- *ngIf="showDateRange" -->
+    <span class="icon-cog" (click)="onIconClick()">
+    </span>
+    <card-menu [visible]="isMenuVisible" [items]="menuItems" (menuClick)="onMenuItemClick($event)"> </card-menu>
+    <div *ngIf="titleText" class="title">{{ titleText }}
+
+      <div class="loading-container"  *ngIf="this.isLoading">
+        <div class="ripple-dot"></div>
+        <span class="color-changing-text">Loading...</span>
+      </div>
+
+    </div>
+
+
+
+    <ng-content select="[filter]"></ng-content>
+  </div>
+  <div *ngIf="!isLoading" class="content">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+
+<dx-popup [visible]="isDateRangeVisble" title="Select Date Range" [width]="400" [height]="220" [showCloseButton]="true"
+  (onHiding)="onPopupHiding($event)">
+  <div (click)="onDateContainerClick($event, dateRangeBox)">
+    <dx-date-range-box #dateRangeBox displayFormat="dd/MM/yyyy" [startDate]="startDate" [endDate]="endDate"
+      [showClearButton]="true" [useMaskBehavior]="true" [openOnFieldClick]="false"
+      (onValueChanged)="handleValueChange($event)" timezone="Asia/Calcutta">
+    </dx-date-range-box>
+  </div>
+
+
+  <div class="full-width-button">
+    <dx-button text="Save" type="default" (onClick)="onSaveClick()" style="background: rgb(128, 128, 128);"></dx-button>
+  </div>
+</dx-popup>

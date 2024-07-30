@@ -1,0 +1,588 @@
+<dx-scroll-view class="view-wrapper-scroll">
+  <div class="view-wrapper">
+    <!-- <toolbar-analytics titleText="Sales Report" (locationChanged)="onlocationChanged($event)"> </toolbar-analytics> -->
+
+    <toolbar-analytics [titleText]="selectedLocationName" [panelItems]="analyticsPanelItems" [selectedItems]="[1]"
+      (selectionChanged)="selectionDateChange($event)" (locationChanged)="onlocationChanged($event)"
+      [isDisplayLocation]="false" [showBackButton]="true" (refresh)="refreshPage()">
+    </toolbar-analytics>
+
+
+    <!--  new view start here -->
+    <div *ngFor="let row of layout; let rowIndex = index">
+      <div *ngIf="rowIndex==0 || rowIndex==6" class="cards grey">
+        <div *ngFor="let column of row.columns; let columnIndex = index">
+          <ng-container *ngIf="column.items.length>0; else blankValue">
+            <div [ngSwitch]="column.items[0].id">
+              <div *ngSwitchCase="'1'">
+                <!-- [cardOptions]="saleCardOptions"  -->
+                <sale-card [dates]="selectedDateRange" [cardOptions]="saleCardOptions"
+                  (cardDateRange)="onSaleMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'2'">
+                <sale-card [cardOptions]="purchaseCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'3'">
+                <sale-card [cardOptions]="ordersCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onOrderMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'4'">
+                <sale-card [cardOptions]="mopCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onMOPMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'5'">
+                <sale-card [cardOptions]="taxDiscountCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onTaxDiscMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'6'">
+                <sale-card [cardOptions]="topSaleCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'7'">
+                <sale-card [cardOptions]="feedbackCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'8'">
+                <sale-card [cardOptions]="customerCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'9'">
+                <!-- [data]="allLocationSale" -->
+                <revenue-analysis-card [totalSale]="totalSales[0]?.value" [supportData]="multiLocationData"
+                  [cardID]="column.items[0].id"></revenue-analysis-card>
+              </div>
+              <div *ngSwitchCase="'10'">
+                <sales-by-range-card title="Location Sales" [cardID]="column.items[0].id"></sales-by-range-card>
+              </div>
+
+
+
+              <div *ngSwitchCase="'11'">
+                <!-- Cash and Bank -->
+                <sale-card [cardOptions]="cashBankCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onCashBankMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'12'">
+                <!-- Ratio Analysis -->
+                <sale-card [cardOptions]="ratioCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onRatioMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'13'">
+                <!-- Sale By time Graph -->
+                <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'14'">
+                <!-- Sale by Ticket -->
+                <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'15'">
+                <!-- sale by department -->
+                <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'16'">
+                <!-- sale by group -->
+                <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'17'">
+                <!-- sale by sub group -->
+                <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'18'">
+                <!-- sale by brand -->
+                <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'19'">
+                <!--  fraud control -->
+                <fraud-cotrol-cardlist  [showDateRange]="true" [dates]="selectedDateRange"
+                  (cardDateRange)="onFraudConrolClick($event)"></fraud-cotrol-cardlist>
+              </div>
+
+              <div *ngSwitchCase="'20'">
+                <!-- area demographic -->
+                <sales-graph-card [options]="saleByCustAreaOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'21'">
+                <!-- Net promoters -->
+                <sales-graph-card [options]="feedackGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'22'">
+                <!-- sale by weekday -->
+                <sales-graph-card [options]="saleWeekDayGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'23'">
+                <!-- supplier perfomance -->
+                <sale-card [cardOptions]="supplierCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onSupplierMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'24'">
+                <!-- sale by shift -->
+                <sale-card [cardOptions]="shiftCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onShiftMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+
+
+            </div>
+          </ng-container>
+          <ng-template #blankValue>
+          </ng-template>
+        </div>
+      </div>
+
+      <div *ngIf="rowIndex==1 || rowIndex==2 || rowIndex==3" class="cards half">
+        <div *ngFor="let column of row.columns; let columnIndex = index">
+          <ng-container *ngIf="column.items.length>0; else blankValue">
+            <div [ngSwitch]="column.items[0].id">
+              <div *ngSwitchCase="'1'">
+                <!-- [cardOptions]="saleCardOptions"  -->
+                <sale-card [dates]="selectedDateRange" [cardOptions]="saleCardOptions"
+                  (cardDateRange)="onSaleMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'2'">
+                <sale-card [cardOptions]="purchaseCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'3'">
+                <sale-card [cardOptions]="ordersCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onOrderMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'4'">
+                <sale-card [cardOptions]="mopCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onMOPMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'5'">
+                <sale-card [cardOptions]="taxDiscountCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onTaxDiscMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'6'">
+                <sale-card [cardOptions]="topSaleCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'7'">
+                <sale-card [cardOptions]="feedbackCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'8'">
+                <sale-card [cardOptions]="customerCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'9'">
+                <!-- [data]="allLocationSale" -->
+                <revenue-analysis-card [totalSale]="totalSales[0]?.value" [supportData]="multiLocationData"
+                  [cardID]="column.items[0].id"></revenue-analysis-card>
+              </div>
+              <div *ngSwitchCase="'10'">
+                <sales-by-range-card title="Location Sales" [cardID]="column.items[0].id"></sales-by-range-card>
+              </div>
+
+
+
+              <div *ngSwitchCase="'11'">
+                <!-- Cash and Bank -->
+                <sale-card [cardOptions]="cashBankCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onCashBankMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'12'">
+                <!-- Ratio Analysis -->
+                <sale-card [cardOptions]="ratioCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onRatioMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'13'">
+                <!-- Sale By time Graph -->
+                <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+                  [dates]="selectedDateRange" [cardID]="column.items[0].id"
+                  (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'14'">
+                <!-- Sale by Ticket -->
+                <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+                  [dates]="selectedDateRange" [cardID]="column.items[0].id"
+                  (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'15'">
+                <!-- sale by department -->
+                <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+                  [dates]="selectedDateRange" [cardID]="column.items[0].id"
+                  (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'16'">
+                <!-- sale by group -->
+                <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+                  [dates]="selectedDateRange" [cardID]="column.items[0].id"
+                  (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'17'">
+                <!-- sale by sub group -->
+                <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+                  [dates]="selectedDateRange" [cardID]="column.items[0].id"
+                  (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'18'">
+                <!-- sale by brand -->
+                <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+                  [dates]="selectedDateRange" [cardID]="column.items[0].id"
+                  (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'19'">
+                <!--  fraud control -->
+                <fraud-cotrol-cardlist  [showDateRange]="true" [dates]="selectedDateRange"
+                  (cardDateRange)="onFraudConrolClick($event)"></fraud-cotrol-cardlist>
+              </div>
+
+              <div *ngSwitchCase="'20'">
+                <!-- area demographic -->
+                <sales-graph-card [options]="saleByCustAreaOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'21'">
+                <!-- Net promoters -->
+                <sales-graph-card [options]="feedackGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'22'">
+                <!-- sale by weekday -->
+                <sales-graph-card [options]="saleWeekDayGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'23'">
+                <!-- supplier perfomance -->
+                <sale-card [cardOptions]="supplierCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onSupplierMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'24'">
+                <!-- sale by shift -->
+                <sale-card [cardOptions]="shiftCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onShiftMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+
+
+            </div>
+          </ng-container>
+          <ng-template #blankValue>
+          </ng-template>
+        </div>
+      </div>
+
+      <div *ngIf="rowIndex==4" class="cards-full">
+        <div *ngFor="let column of row.columns; let columnIndex = index">
+          <ng-container *ngIf="column.items.length>0; else blankValue">
+            <div [ngSwitch]="column.items[0].id">
+              <div *ngSwitchCase="'1'">
+                <!-- [cardOptions]="saleCardOptions"  -->
+                <sale-card [dates]="selectedDateRange" [cardOptions]="saleCardOptions"
+                  (cardDateRange)="onSaleMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'2'">
+                <sale-card [cardOptions]="purchaseCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'3'">
+                <sale-card [cardOptions]="ordersCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onOrderMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'4'">
+                <sale-card [cardOptions]="mopCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onMOPMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'5'">
+                <sale-card [cardOptions]="taxDiscountCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onTaxDiscMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'6'">
+                <sale-card [cardOptions]="topSaleCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'7'">
+                <sale-card [cardOptions]="feedbackCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'8'">
+                <sale-card [cardOptions]="customerCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'9'">
+                <!-- [data]="allLocationSale" -->
+                <revenue-analysis-card [totalSale]="totalSales[0]?.value" [supportData]="multiLocationData"
+                  [cardID]="column.items[0].id"></revenue-analysis-card>
+              </div>
+              <div *ngSwitchCase="'10'">
+                <sales-by-range-card title="Location Sales" [cardID]="column.items[0].id"></sales-by-range-card>
+              </div>
+
+
+
+              <div *ngSwitchCase="'11'">
+                <!-- Cash and Bank -->
+                <sale-card [cardOptions]="cashBankCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onCashBankMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'12'">
+                <!-- Ratio Analysis -->
+                <sale-card [cardOptions]="ratioCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onRatioMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'13'">
+                <!-- Sale By time Graph -->
+                <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'14'">
+                <!-- Sale by Ticket -->
+                <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'15'">
+                <!-- sale by department -->
+                <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'16'">
+                <!-- sale by group -->
+                <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'17'">
+                <!-- sale by sub group -->
+                <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'18'">
+                <!-- sale by brand -->
+                <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'19'">
+                <!--  fraud control -->
+                <fraud-cotrol-cardlist [showDateRange]="true" [dates]="selectedDateRange"
+                  (cardDateRange)="onFraudConrolClick($event)"></fraud-cotrol-cardlist>
+              </div>
+
+              <div *ngSwitchCase="'20'">
+                <!-- area demographic -->
+                <sales-graph-card [options]="saleByCustAreaOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'21'">
+                <!-- Net promoters -->
+                <sales-graph-card [options]="feedackGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'22'">
+                <!-- sale by weekday -->
+                <sales-graph-card [options]="saleWeekDayGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'23'">
+                <!-- supplier perfomance -->
+                <sale-card [cardOptions]="supplierCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onSupplierMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'24'">
+                <!-- sale by shift -->
+                <sale-card [cardOptions]="shiftCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onShiftMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+
+
+            </div>
+          </ng-container>
+          <ng-template #blankValue>
+          </ng-template>
+        </div>
+      </div>
+
+      <div *ngIf="rowIndex==5" class="cards3 layer3">
+        <div *ngFor="let column of row.columns; let columnIndex = index">
+          <ng-container *ngIf="column.items.length>0; else blankValue">
+            <div [ngSwitch]="column.items[0].id">
+              <div *ngSwitchCase="'1'">
+                <!-- [cardOptions]="saleCardOptions"  -->
+                <sale-card [dates]="selectedDateRange" [cardOptions]="saleCardOptions"
+                  (cardDateRange)="onSaleMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'2'">
+                <sale-card [cardOptions]="purchaseCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'3'">
+                <sale-card [cardOptions]="ordersCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onOrderMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'4'">
+                <sale-card [cardOptions]="mopCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onMOPMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'5'">
+                <sale-card [cardOptions]="taxDiscountCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onTaxDiscMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'6'">
+                <sale-card [cardOptions]="topSaleCardOptions" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'7'">
+                <sale-card [cardOptions]="feedbackCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'8'">
+                <sale-card [cardOptions]="customerCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'9'">
+                <!-- [data]="allLocationSale" -->
+                <revenue-analysis-card [totalSale]="totalSales[0]?.value" [supportData]="multiLocationData"
+                  [cardID]="column.items[0].id"></revenue-analysis-card>
+              </div>
+              <div *ngSwitchCase="'10'">
+                <sales-by-range-card title="Location Sales" [cardID]="column.items[0].id"></sales-by-range-card>
+              </div>
+
+
+
+              <div *ngSwitchCase="'11'">
+                <!-- Cash and Bank -->
+                <sale-card [cardOptions]="cashBankCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onCashBankMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'12'">
+                <!-- Ratio Analysis -->
+                <sale-card [cardOptions]="ratioCardOption" [dates]="selectedDateRange"
+                  (cardDateRange)="onRatioMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'13'">
+                <!-- Sale By time Graph -->
+                <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'14'">
+                <!-- Sale by Ticket -->
+                <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'15'">
+                <!-- sale by department -->
+                <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'16'">
+                <!-- sale by group -->
+                <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'17'">
+                <!-- sale by sub group -->
+                <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'18'">
+                <!-- sale by brand -->
+                <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'19'">
+                <!--  fraud control -->
+                <fraud-cotrol-cardlist [showDateRange]="true" [dates]="selectedDateRange"></fraud-cotrol-cardlist>
+              </div>
+
+              <div *ngSwitchCase="'20'">
+                <!-- area demographic -->
+                <sales-graph-card [options]="saleByCustAreaOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'21'">
+                <!-- Net promoters -->
+                <sales-graph-card [options]="feedackGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'22'">
+                <!-- sale by weekday -->
+                <sales-graph-card [options]="saleWeekDayGraphCardOption" [dates]="selectedDateRange"
+                  [cardID]="column.items[0].id" (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'23'">
+                <!-- supplier perfomance -->
+                <sale-card [cardOptions]="supplierCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onSupplierMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'24'">
+                <!-- sale by shift -->
+                <sale-card [cardOptions]="shiftCardOptions" [dates]="selectedDateRange"
+                  (cardDateRange)="onShiftMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+
+
+            </div>
+          </ng-container>
+          <ng-template #blankValue>
+          </ng-template>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- new view end here -->
+
+  </div>
+</dx-scroll-view>
+
+
+<dx-load-panel container=".view-wrapper" [position]="{ of: '.content' }" [visible]="isLoading"
+  [showPane]="true"></dx-load-panel>

@@ -1,0 +1,204 @@
+<div class="ticker">
+
+    <div class="middle">
+
+        <!-- Card Header and Percentage/ Count  -->
+        <div class="header">
+            <div class="title">
+                {{this.cardOptions.cardTitle}}
+                <span class="icon-cog" (click)="onIconClick()" *ngIf="this.cardOptions.showDateRamge">
+                </span>
+            </div>
+
+            <div class="growth">
+                <ng-container *ngIf="this.cardOptions.showCountOnTop; else sumValue">{{ this.cardOptions.countVal |
+                    number }}</ng-container>
+                <ng-template #sumValue>
+                    <ng-container *ngIf="this.cardOptions.showSumOnTop">
+                        {{customInrFormat(getTotal | apply: this.cardOptions.dataTable)}}
+                    </ng-container>
+                </ng-template>
+
+                <div *ngIf="this.cardOptions.showPercentage" class="percentage"
+                    [class]="this.cardOptions.percentageVal > 0 ? 'positive': 'negative'">
+                    <div [class]="'dx-icon-'+ (this.cardOptions.percentageVal > 0 ? 'spinup' : 'spindown')"></div>
+                    <i class="value"></i>
+                    <span>{{ abs(this.cardOptions.percentageVal) }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Subheader with values -->
+        <div class="info" style="margin-top: 10px;">
+            <div class="total  container">
+                <div class="row" *ngIf="this.cardOptions.subHeader?.length>0">
+                    <div class="column" *ngFor="let item of this.cardOptions.subHeader">{{item.key}}</div>
+                </div>
+                <div class="row" *ngIf="this.cardOptions.subHeader?.length>0">
+                    <div class="column sub-title" *ngFor="let item of this.cardOptions.subHeader">
+                        {{customInrFormat(item?.val)}}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Conainer Header-->
+        <div class="info" *ngIf="this.cardOptions.showTableHeader">
+            <div class="container" style="padding-top: 6px;">
+
+                <ng-container *ngIf="this.cardOptions.columnMap.length>0; else dataColumns">
+                    <ng-container>
+                        <div class="row row-line">
+                            <div *ngFor="let item of this.cardOptions.columnMap | slice :0:this.cardOptions.columnLimit? this.cardOptions.columnLimit:4;index as i"
+                                [ngClass]="getMapClass(this.cardOptions.columnMap)" class="col-header">
+                                {{item.caption}}
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
+                <ng-template #dataColumns>
+                    <!-- for Group data -->
+                    <div *ngIf="this.cardOptions.groupData" class="row row-line">
+                        <div *ngFor="let item of this.cardOptions.groupData[0] | unsortedKeyvalue | slice :0:this.cardOptions.columnLimit? this.cardOptions.columnLimit:4;index as i"
+                            [ngClass]="getClass(this.cardOptions.groupData[0])" class="col-header">
+                            {{item.key}}
+                        </div>
+                    </div>
+
+                    <!-- for without group and from datatable -->
+                    <div *ngIf="this.cardOptions.dataTable?.length>0 && !this.cardOptions.groupData"
+                        class="row row-line">
+                        <div *ngFor="let item of this.cardOptions.dataTable[0] | unsortedKeyvalue | slice :0:this.cardOptions.columnLimit? this.cardOptions.columnLimit:4;index as i"
+                            [ngClass]="getClass(this.cardOptions.dataTable[0])" class="col-header">
+                            {{item.key}}
+
+                        </div>
+                    </div>
+                </ng-template>
+
+            </div>
+        </div>
+
+
+        <!-- Table Container -->
+        <div class="info" style="padding-top: 10px;">
+            <br *ngIf="this.cardOptions.addTopBlankRowOnCard">
+
+            <!--  for group  -->
+            <div *ngIf="this.cardOptions.groupData">
+                <div class="container" *ngFor="let row of this.cardOptions.groupData  | slice:0:4">
+                    <div *ngIf="this.cardOptions.groupData" class="row">
+                        <div *ngFor="let item of row | unsortedKeyvalue | slice:0:this.cardOptions.columnLimit? this.cardOptions.columnLimit:4;index as i"
+                            [ngClass]="getClass(row)">
+                            <ng-container *ngIf="isCurrency(item.value, item.key); else otherValues">
+                                {{ customInrFormat(item.value)}}
+                            </ng-container>
+                            <ng-template #otherValues>
+                                <ng-container *ngIf="isNumber(item.value); else textValue">
+                                    {{ getNumberFormat(item.value) }}
+                                </ng-container>
+                                <ng-template #textValue>
+                                    {{ item.value }}
+                                </ng-template>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for non group -->
+            <div *ngIf="!this.cardOptions.groupData">
+                <!-- For Without Group -->
+                <div class="container" *ngFor="let row of this.cardOptions.dataTable  | slice:0:4">
+                    <div class="row" *ngIf="this.cardOptions.dataTable?.length>0 && !this.cardOptions.groupData">
+                        <div *ngFor="let item of row | unsortedKeyvalue | slice:0:this.cardOptions.columnLimit? this.cardOptions.columnLimit:4;index as i"
+                            [ngClass]="getClass(row)">
+
+                            <ng-container *ngIf="isCurrency(item.value, item.key); else otherValues">
+                                {{ customInrFormat(item.value)}}
+                            </ng-container>
+                            <ng-template #otherValues>
+                                <ng-container *ngIf="isNumber(item.value); else textValue">
+                                    {{ getNumberFormat(item.value) }}
+                                </ng-container>
+                                <ng-template #textValue>
+                                    {{ item.value }}
+                                </ng-template>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="container" *ngFor="let item of this.cardOptions.dataTable">
+                <div *ngFor="let item of this.cardOptions.dataTable | slice:0:3" >
+                    <div *ngFor="let itm of item | unsortedKeyvalue" class="row">
+                        {{itm.value}}
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
+        <!-- Footer Box -->
+        <div class="footer-box">
+
+            <ng-container *ngIf="this.cardOptions.isLoading; else footerView">
+                <div class="loading-container lp-9" *ngIf="this.cardOptions.isLoading">
+                    <div class="ripple-dot"></div>
+                    <span class="color-changing-text">Loading...</span>
+                </div>
+            </ng-container>
+
+            <ng-template #footerView>
+                <div class="lp-9">{{this.cardOptions.footerText}}</div>
+                <div class="menu">
+                    <div class="info">
+                        <div>
+                            <card-view [visible]="this.cardOptions.isDetailViewVisible"
+                                [items]="this.cardOptions.dropDownMenu"
+                                [class]="this.cardOptions.isDetailViewVisible ==false ? 'right': ''"
+                                [dataSource]="cardOptions.dataTable"
+                                [columns]="this.cardOptions.gridColumn"></card-view>
+                            <!-- [columns]="this.cardOptions.columns" -->
+                            <card-menu [visible]="this.cardOptions.isDropDownVisible"
+                                [items]="this.cardOptions.dropDownMenu"
+                                [class]="this.cardOptions.isDetailViewVisible ==true ? 'right': ''">
+                            </card-menu>
+                        </div>
+
+                    </div>
+                </div>
+
+            </ng-template>
+
+
+        </div>
+
+        <!-- date range display if the data chanegd in card -->
+        <span *ngIf="isDateModified" class="date-text"><strong>{{startDate}} {{startDate?.length>0 ? '-':''}}
+                {{endDate}}</strong></span>
+
+    </div>
+
+</div>
+
+
+<dx-popup [visible]="isDateRangeVisble" title="Select Date Range" [width]="400" [height]="220" [showCloseButton]="true"
+    (onHiding)="onPopupHiding($event)">
+    <div (click)="onDateContainerClick($event, dateRangeBox)">
+        <dx-date-range-box #dateRangeBox displayFormat="dd/MM/yyyy" [startDate]="startDate" [endDate]="endDate"
+            [showClearButton]="true" [useMaskBehavior]="true" [openOnFieldClick]="false"
+            (onValueChanged)="handleValueChange($event)" timezone="Asia/Calcutta">
+        </dx-date-range-box>
+    </div>
+
+
+    <div class="full-width-button">
+        <dx-button text="Save" type="default" (onClick)="onSaveClick()"
+            style="background: rgb(128, 128, 128);"></dx-button>
+    </div>
+</dx-popup>

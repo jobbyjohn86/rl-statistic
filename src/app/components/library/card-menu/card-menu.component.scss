@@ -1,0 +1,9 @@
+::ng-deep .dx-dropdownbutton-content {
+  .dx-list-item {
+    display: block;
+  }
+}
+
+::ng-deep .dx-dropdownbutton-popup-wrapper.dx-popup-wrapper .dx-overlay-content{
+  width: 250px !important;
+}

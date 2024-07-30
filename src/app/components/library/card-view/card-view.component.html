@@ -1,0 +1,68 @@
+<dx-button icon="menu" class="overflow-menu" [visible]="visible" (onClick)="showPopup($event)" stylingMode="text"
+  itemTemplate="fontItem">
+</dx-button>
+
+<dx-popup [(visible)]="popupVisible" [hideOnOutsideClick]="true" [showCloseButton]="true" title="Detail Info">
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view width="100%" height="100%">
+      <dx-data-grid [dataSource]="dataSource" [showBorders]="true" [rowAlternationEnabled]="true" [columns]="columns"
+        [remoteOperations]="false">
+
+        <dxo-summary>
+          <dxi-group-item *ngIf="!isCount" column="value" summaryType="sum"  
+           [displayFormat]="getSummaryDisplayFormat()"
+            [showInGroupFooter]="true">
+            <dxo-value-format [precision]="2"></dxo-value-format>
+          </dxi-group-item>
+        </dxo-summary>
+
+      </dx-data-grid>
+    </dx-scroll-view>
+  </div>
+</dx-popup>
+
+<!-- <dx-popup  [height]="520" [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible"
+  title="Detail Info">
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view width="100%" height="100%">
+      <div class="content">
+
+        <div *ngIf="isGrouped">
+          <dx-data-grid [dataSource]="dataSource" [showBorders]="true" [rowAlternationEnabled]="true" [columns]="columns" [remoteOperations]="false" >
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-sorting mode="none"></dxo-sorting>
+
+            <dxo-paging [enabled]="false"></dxo-paging>
+
+            <dxo-summary>
+              <dxi-group-item *ngIf="!isCount" column="value" summaryType="sum" displayFormat="Total : ₹ {0}"
+                [showInGroupFooter]="true">
+                <dxo-value-format [precision]="2"></dxo-value-format>
+              </dxi-group-item>
+            </dxo-summary>
+
+          </dx-data-grid>
+        </div>
+
+        <div *ngIf="!isGrouped">
+          <dx-data-grid id="gridContainer" [dataSource]="dataSource" [showBorders]="true" [rowAlternationEnabled]="true" [columns]="columns">
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-sorting mode="none"></dxo-sorting>
+
+            <dxo-summary>
+              <dxi-group-item *ngIf="!isCount" column="value" summaryType="sum" displayFormat="Total : ₹ {0}"
+                [showInGroupFooter]="true">
+                <dxo-value-format [precision]="2"></dxo-value-format>
+              </dxi-group-item>
+            </dxo-summary>
+
+          </dx-data-grid>
+        </div>
+
+
+      </div>
+    </dx-scroll-view>
+  </div>
+</dx-popup> -->

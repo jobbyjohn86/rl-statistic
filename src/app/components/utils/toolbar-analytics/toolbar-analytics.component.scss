@@ -1,0 +1,21 @@
+@use "../../../../variables.scss" as *;
+@use "sass:math";
+
+.toolbar-header {
+  @include header();
+}
+
+@media only screen and (max-width: 400px) {
+  ::ng-deep .dx-tab {
+    min-width: 70px;
+  }
+  .toolbar-header{
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .toolbar-header{
+    font-size: 14px;
+  }
+}

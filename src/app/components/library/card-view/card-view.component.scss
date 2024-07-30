@@ -1,0 +1,44 @@
+::ng-deep .dx-dropdownbutton-content {
+  .dx-list-item {
+    display: block;
+  }
+}
+
+::ng-deep .dx-dropdownbutton-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
+  width: 250px !important;
+}
+
+// ::ng-deep .dx-datagrid .dx-row .dx-widget {
+//   height: 15px;
+// }
+
+// ::ng-deep .dx-datagrid .dx-row .dx-widget input.dx-texteditor-input {
+//   height: 15px;
+//   min-height: 15px;
+// }
+
+::ng-deep .dx-datagrid .dx-row>td {
+  padding: 8px 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+::ng-deep #gridContainer {
+  height: 420px;
+}
+
+::ng-deep .dx-datagrid .dx-datagrid-headers .dx-datagrid-text-content.dx-group-cell {
+  font-family: Arial, sans-serif; /* Change font family */
+  font-size: 14px; /* Change font size */
+  font-weight: bold; /* Change font weight */
+  /* Add any other font properties as needed */
+}
+
+// ::ng-deep .dx-popup-wrapper> .dx-overlay-content{
+//   width: 100% !important;
+// }
+
+
+::ng-deep .dx-right-align {
+  text-align: right;
+}

@@ -1,0 +1,554 @@
+<dx-scroll-view class="view-wrapper-scroll">
+  <div class="view-wrapper">
+    <!-- <toolbar-analytics titleText="Sales Report" (locationChanged)="onlocationChanged($event)"> </toolbar-analytics> -->
+
+    <toolbar-analytics [titleText]="selectedLocationName" [panelItems]="analyticsPanelItems" [selectedItems]="[1]"
+      (selectionChanged)="selectionDateChange($event)" (locationChanged)="onlocationChanged($event)"
+      [isDisplayLocation]="false" [showBackButton]="true" (refresh)="refreshPage()">
+    </toolbar-analytics>
+
+
+    <!--  new view start here -->
+    <div *ngFor="let row of layout; let rowIndex = index">
+      <div *ngIf="rowIndex==0 || rowIndex==4" class="cards grey">
+        <div *ngFor="let column of row.columns; let columnIndex = index">
+          <ng-container *ngIf="column.items.length>0; else blankValue">
+            <div [ngSwitch]="column.items[0].id">
+              <div *ngSwitchCase="'1'">
+                <!-- [cardOptions]="saleCardOptions"  -->
+                <sale-card [dates]="selectedDateRange" [cardOptions]="saleCardOptions" (cardDateRange)="onSaleMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'2'">
+                <sale-card [cardOptions]="purchaseCardOptions" [dates]="selectedDateRange" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'3'">
+                <sale-card [cardOptions]="ordersCardOptions" [dates]="selectedDateRange"  (cardDateRange)="onOrderMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'4'">
+                <sale-card [cardOptions]="mopCardOptions" [dates]="selectedDateRange"  (cardDateRange)="onMOPMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'5'">
+                <sale-card [cardOptions]="taxDiscountCardOptions" [dates]="selectedDateRange" 
+                  (cardDateRange)="onTaxDiscMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'6'">
+                <sale-card [cardOptions]="topSaleCardOptions" [dates]="selectedDateRange"   [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'7'">
+                <sale-card [cardOptions]="feedbackCardOption" [dates]="selectedDateRange"   [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'8'">
+                <sale-card [cardOptions]="customerCardOption" [dates]="selectedDateRange"  [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'9'">
+                <!-- [data]="allLocationSale" -->
+                <revenue-analysis-card  [totalSale]="totalSales[0]?.value"
+                  [supportData]="multiLocationData"  [cardID]="column.items[0].id"></revenue-analysis-card>
+              </div>
+              <div *ngSwitchCase="'10'">
+                <sales-by-range-card title="Location Sales" [cardID]="column.items[0].id"></sales-by-range-card>
+              </div>
+
+
+
+              <div *ngSwitchCase="'11'">
+                <!-- Cash and Bank -->
+                <sale-card [cardOptions]="cashBankCardOption" [dates]="selectedDateRange"  (cardDateRange)="onCashBankMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'12'">
+                <!-- Ratio Analysis -->
+                <sale-card [cardOptions]="ratioCardOption" [dates]="selectedDateRange"  (cardDateRange)="onRatioMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'13'">
+                <!-- Sale By time Graph -->
+                <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'14'">
+                <!-- Sale by Ticket -->
+                <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'15'">
+                <!-- sale by department -->
+                <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'16'">
+                <!-- sale by group -->
+                <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'17'">
+                <!-- sale by sub group -->
+                <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'18'">
+                <!-- sale by brand -->
+                <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'19'">
+                <!--  fraud control -->
+              </div>
+
+              <div *ngSwitchCase="'20'">
+                <!-- area demographic -->
+                <sales-graph-card [options]="saleByCustAreaOption"
+                  (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'21'">
+                <!-- Net promoters -->
+                <sales-graph-card [options]="feedackGraphCardOption"
+                  (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'22'">
+                <!-- sale by weekday -->
+                <sales-graph-card [options]="saleWeekDayGraphCardOption"
+                  (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'23'">
+                <!-- supplier perfomance -->
+                <sale-card [cardOptions]="supplierCardOptions" [dates]="selectedDateRange"  (cardDateRange)="onSupplierMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+              <div *ngSwitchCase="'24'">
+                <!-- sale by shift -->
+                <sale-card [cardOptions]="shiftCardOptions" [dates]="selectedDateRange"  (cardDateRange)="onShiftMenuClick($event)" [cardID]="column.items[0].id"></sale-card>
+              </div>
+
+
+
+            </div>
+          </ng-container>
+          <ng-template #blankValue>
+          </ng-template>
+        </div>
+      </div>
+
+      <!--  -->
+      <div class="cards grey">
+
+      </div>
+
+      <div class="cards half">
+
+      </div>
+
+      <div class="cards-full">
+
+      </div>
+
+      <div class="cards3 layer3">
+
+      </div>
+
+      <div class="cards grey">
+
+      </div>
+
+    </div>
+
+
+
+
+    <!-- new view end here -->
+
+
+    <!-- test start -->
+    <!-- <div *ngFor="let row of layout; let rowIndex = index">
+      <div *ngIf="rowIndex==0" class="cards grey">
+        <div *ngFor="let column of row.columns; let columnIndex = index">
+
+          <ng-container *ngIf="column.items.length>0; else blankValue">
+            <div [ngSwitch]="column.items[0].id">
+              <div *ngSwitchCase="'1'">
+                <sale-card [cardOptions]="saleCardOptions" (cardDateRange)="onSaleMenuClick($event)"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'2'">
+                <sale-card [cardOptions]="purchaseCardOptions" (cardDateRange)="onPurchaseMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'3'">
+                <sale-card [cardOptions]="ordersCardOptions" (cardDateRange)="onOrderMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'4'">
+                <sale-card [cardOptions]="mopCardOptions" (cardDateRange)="onMOPMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'5'">
+                <sale-card [cardOptions]="taxDiscountCardOptions"
+                  (cardDateRange)="onTaxDiscMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'6'">
+                <sale-card [cardOptions]="topSaleCardOptions" (cardDateRange)="onTopSaleMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'7'">
+                <sale-card [cardOptions]="feedbackCardOption" (cardDateRange)="onFeedbackMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'8'">
+                <sale-card [cardOptions]="customerCardOption" (cardDateRange)="onCustomerMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'9'">
+                <revenue-analysis-card [data]="allLocationSale" [totalSale]="totalSales[0]?.value"
+                  [supportData]="multiLocationData" (menuClick)="onLocationMenuClck($event)"></revenue-analysis-card>
+              </div>
+              <div *ngSwitchCase="'10'">
+                <sales-by-range-card title="Location Sales" [data]="saleChart"></sales-by-range-card>
+              </div>
+
+
+
+              <div *ngSwitchCase="'11'">
+                <sale-card [cardOptions]="cashBankCardOption" (cardDateRange)="onCashBankMenuClick($event)"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'12'">
+                <sale-card [cardOptions]="ratioCardOption" (cardDateRange)="onRatioMenuClick($event)"></sale-card>
+              </div>
+
+              <div *ngSwitchCase="'13'">
+                <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'14'">
+                <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'15'">
+                <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'16'">
+                <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'17'">
+                <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'18'">
+                <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+                  (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+              </div>
+
+              <div *ngSwitchCase="'19'">
+              </div>
+
+              <div *ngSwitchCase="'20'">
+                <sales-graph-card [options]="saleByCustAreaOption"
+                  (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'21'">
+                <sales-graph-card [options]="feedackGraphCardOption"
+                  (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'22'">
+                <sales-graph-card [options]="saleWeekDayGraphCardOption"
+                  (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+              </div>
+
+              <div *ngSwitchCase="'23'">
+                <sale-card [cardOptions]="supplierCardOptions"
+                  (cardDateRange)="onSupplierMenuClick($event)"></sale-card>
+              </div>
+              <div *ngSwitchCase="'24'">
+                <sale-card [cardOptions]="shiftCardOptions" (cardDateRange)="onShiftMenuClick($event)"></sale-card>
+              </div>
+
+
+            </div>
+          </ng-container>
+
+          <ng-template #blankValue>
+          </ng-template>
+
+        </div>
+      </div>
+    </div> -->
+
+
+    <!-- test end -->
+
+    <div class="cards grey">
+      <total-sale-ticker [data]="totalSales" [percentage]="targetPercentage" [count]="0" [dataDetail]="saleDetail"
+        [menuitems]="saleMenu"
+        footerText="Average Ticket Size : {{ (saleInvoiceCount | currency: 'INR':'₹ ':'1.0-0' )}}"
+        (cardSetting)="onSaleMenuClick($event)"></total-sale-ticker>
+
+      <cash-bank-ticker [data]="cashBank" [isContent]="true" [percentage]="0" [count]="0" [details]="cashBankDetails"
+        [columns]="cashBankCardColumn" [IsCount]="false" [isGrouped]="false" [cardColumns]="cashBankCardColumn"
+        [footerText]="cashBankCardOption.footerText" (cardSetting)="onCashBankMenuClick($event)">
+      </cash-bank-ticker>
+      <!-- footerText="Runway ➜  {{(cashBankDetails.length>0 ? cashBankDetails[0].name:'')}} - {{(cashBankDetails.length>0 ? cashBankDetails[0].orders:'')}}" -->
+
+      <number-of-orders-ticker [data]="orders" [isContent]="true" [percentage]="0" [count]="0" [details]="orderDetails"
+        [columns]="orderColumns" [IsCount]="true" [isGrouped]="false" [cardColumns]="orderCardColumn"
+        footerText="Highest Order ➜  {{(orderDetails.length>0 ? orderDetails[0].name:'')}} - {{(orderDetails.length>0 ? orderDetails[0].orders:'')}}"
+        (cardSetting)="onOrderMenuClick($event)">
+      </number-of-orders-ticker>
+
+
+      <ratio-analysis-ticker [data]="" [isContent]="true" [percentage]="0" [count]="0" [details]="ratioAnalysis"
+        [columns]="ratioAnalysisColumns" [IsCount]="false" [isGrouped]="false" [cardColumns]="cashBankCardColumn"
+        footerText="More ➜  " (cardSetting)="onRatioMenuClick($event)">
+      </ratio-analysis-ticker>
+
+
+
+      <!-- <total-sale-ticker [data]="totalSale" [percentage]="0" [count]="0" [dataDetail]=""
+        [menuitems]=""></total-sale-ticker>
+      <number-of-orders-ticker titleText="Dine In" [data]="dineIn" [percentage]="0" [count]="dineInCount"
+        [details]=""></number-of-orders-ticker>
+      <number-of-orders-ticker titleText="Pickup" [data]="pickUp" [percentage]="0" [count]="pickUpCount"
+        [details]=""></number-of-orders-ticker>
+      <number-of-orders-ticker titleText="Delivery" [data]="delivery" [percentage]="0" [count]="deliveryCount"
+        [details]=""></number-of-orders-ticker> -->
+
+    </div>
+
+
+    <div class="cards half">
+
+      <sales-by-time-card [options]="saleByTimeOptions" [visualRange]="visualRange"
+        (cardSetting)="onSaleByTimeMenuClick($event)" [chartType]="1"></sales-by-time-card>
+
+      <sales-by-time-card [options]="saleByTicketOptions" [visualRange]="visualRange"
+        (cardSetting)="onSaleByTicketMenuClick($event)"></sales-by-time-card>
+
+      <sales-by-time-card [options]="saleByDepartmentOptions" [visualRange]="visualRange"
+        (cardSetting)="onSaleDepartmentMenuClick($event)"></sales-by-time-card>
+
+      <sales-by-time-card [options]="saleByGroupOptions" [visualRange]="visualRange"
+        (cardSetting)="onSaleByGroupMenuClick($event)"></sales-by-time-card>
+
+      <sales-by-time-card [options]="saleBySubGroupOptions" [visualRange]="visualRange"
+        (cardSetting)="onSaleBySubGroupMenuClick($event)"></sales-by-time-card>
+
+      <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange"
+        (cardSetting)="onSaleByBrandMenuClick($event)"></sales-by-time-card>
+
+      <!-- <sales-by-time-card [options]="saleByBrandOptions" [visualRange]="visualRange" titleText="Sale By Brand"
+      [chartType]="11"></sales-by-time-card> -->
+
+
+      <!-- <sales-by-time-card [data]="saleByTime" [visualRange]="visualRange" titleText="Sale By Time" [chartType]="1"
+        [options]="saleByTimeOptions"></sales-by-time-card>
+
+      <sales-by-time-card [data]="saleByTicket" [visualRange]="visualRange" titleText="Sale By Ticket Size"
+        [isRotated]="true" [chartType]="1" [options]="saleByTicketOptions"></sales-by-time-card>
+
+      <sales-by-time-card [data]="saleByDepartment" [visualRange]="visualRange" titleText="Sale By Department"
+        [chartType]="6"></sales-by-time-card>
+
+      <sales-by-time-card [data]="saleByGroup" [visualRange]="visualRange" titleText="Sale By Group"
+        [chartType]="12"></sales-by-time-card>
+
+      <sales-by-time-card [data]="saleBySubGroup" [visualRange]="visualRange" titleText="Sale By SubGroup"
+        [chartType]="5"></sales-by-time-card>
+
+      <sales-by-time-card [data]="saleByBrand" [visualRange]="visualRange" titleText="Sale By Brand"
+        [chartType]="11"></sales-by-time-card> -->
+
+
+
+      <!-- <sales-by-time-card [data]="profitNdLoss" [visualRange]="visualRange" titleText="Profit & Loss"
+        [chartType]="5"></sales-by-time-card> -->
+
+      <!-- <sales-by-time-card [data]="expenses" [visualRange]="visualRange" titleText="Expenses"
+        [chartType]="3"></sales-by-time-card>
+      <sales-by-time-card [data]="income" [visualRange]="visualRange" titleText="Income" [chartType]="3"
+        chartPalette="DarkViolet"></sales-by-time-card> -->
+
+    </div>
+
+
+
+    <!-- <card-analytics titleText="Location Insight" contentClass="sales-by-state grid" style="display: grid; width: 100%; gap: 20px;" [isMenuVisible]="true">
+    
+    </card-analytics> -->
+
+    <div class="cards-full">
+      <fraud-cotrol-cardlist [fraudControlData]="fraudControlData" [showDateRange]="true"
+        (cardDateRange)="onFraudConrolClick($event)"></fraud-cotrol-cardlist>
+
+      <!-- <div class="info">
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[0]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[0]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[0]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[1]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[1]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[1]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[2]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[2]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[2]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[3]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[3]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[3]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[4]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[4]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[4]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[5]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[5]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[5]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[6]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[6]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[6]?.name}}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-content" style="font-size: large; font-weight: 800;">{{ fraudControlData[7]?.count}}</div>
+          <div class="info-content">{{ (fraudControlData[7]?.value | currency: 'INR':'₹ ':'1.0-0' )}}</div>
+          <div class="info-content">{{ fraudControlData[7]?.name}}</div>
+        </div>
+      </div> -->
+    </div>
+
+
+    <div class="cards3 layer3">
+      <sales-graph-card [options]="saleByCustAreaOption" (cardSetting)="onSaleAreaMenuClick($event)"></sales-graph-card>
+      <sales-graph-card [options]="feedackGraphCardOption"
+        (cardSetting)="onFeedbackMenuClick($event)"></sales-graph-card>
+      <!-- <sales-graph-card [options]="saleGraphCardOption"></sales-graph-card> -->
+      <sales-graph-card [options]="saleWeekDayGraphCardOption"
+        (cardSetting)="onWeekdayMenuClick($event)"></sales-graph-card>
+
+      <!-- <supplier-statement-ticker [data]="" [isContent]="true" [percentage]="0" [count]="0" [details]="supplierDetails"
+        [columns]="supplierColumns" [IsCount]="true" [isGrouped]="false" [cardColumns]="cashBankCardColumn"
+        footerText="More ➜  ">
+      </supplier-statement-ticker> -->
+
+
+
+
+      <!-- <mop-ticker [data]="paymentMode" [isContent]="true" [count]="0" [dataDetail]="paymentModeDetails"
+        [columns]="payModeColumns" [cardColumns]="paymodeCardColumn"
+        footerText="Preferred Mode ➜ {{ paymentModeDetails[0]?.name }}">
+      </mop-ticker>
+
+      <total-purchase-ticker [data]="totalSales" [percentage]="0" [count]="0" [dataDetail]="" [menuitems]="saleMenu"
+        footerText="Transactions : "></total-purchase-ticker>
+
+      <customer-ticker [data]="" [percentage]="0" [count]="0" [dataDetail]="" [isGrouped]="false"
+        footerText="Total Customer : " [columns]="" [cardColumns]="" [showTotal]="false">
+      </customer-ticker>
+
+      <mop-ticker [data]="paymentMode" [isContent]="true" [count]="0" [dataDetail]="paymentModeDetails"
+        [columns]="payModeColumns" [cardColumns]="paymodeCardColumn"
+        footerText="Preferred Mode ➜ {{ paymentModeDetails[0]?.name }}">
+      </mop-ticker> -->
+    </div>
+
+
+    <div class="cards grey">
+      <supplier-statement-ticker [data]="" [isContent]="true" [percentage]="0" [count]="0" [details]="supplierDetails"
+        [columns]="supplierColumns" [IsCount]="false" [isGrouped]="false" [cardColumns]="cashBankCardColumn"
+        footerText="Return: # {{ purchaseReturn?.TodayMemo? purchaseReturn?.TodayMemo:0}} | Amount: {{ purchaseReturn?.TodayAmt? purchaseReturn?.TodayAmt:0}}"
+        (cardSetting)="onSupplierMenuClick($event)">
+      </supplier-statement-ticker>
+
+      <mop-ticker [data]="paymentMode" [isContent]="true" [count]="0" [dataDetail]="paymentModeDetails"
+        [columns]="payModeColumns" [cardColumns]="paymodeCardColumn"
+        footerText="Preferred Mode ➜ {{ paymentModeDetails[0]?.name }}" (cardSetting)="onMOPMenuClick($event)">
+      </mop-ticker>
+
+      <taxes-ticker [data]="" [dataDetail]="taxAndDiscDetails" [groupData]="taxAndDisc" [isGrouped]="true"
+        footerText="Discounted Invoices : {{totalDicCount}}" [columns]="discTaxColumns"
+        [cardColumns]="taxdiscountCardColumns" [showTotal]="false"
+        (cardSetting)="onTaxDiscMenuClick($event)"></taxes-ticker>
+
+
+      <sale-by-shift-ticker [data]="saleshift" [isContent]="true" [percentage]="0" [count]="0"
+        [details]="saleshiftDetails" [columns]="saleshiftColumns" [IsCount]="false" [isGrouped]="false"
+        [cardColumns]="saleshiftCardColumn" footerText="More ➜  " (cardSetting)="onShiftMenuClick($event)">
+      </sale-by-shift-ticker>
+
+
+    </div>
+
+
+    <div class="cards wide">
+
+      <!-- <sales-range-card [data]="sales" [(visualRange)]="visualRange"
+        (salesRangeChanged)="onRangeChanged($event)"></sales-range-card>
+
+      <sales-by-range-card [data]="salesByCategory"></sales-by-range-card> -->
+
+      <!-- <sales-performance-card [groupByPeriods]="groupByPeriods" [salesByDateAndCategory]="timeBySale"
+        [visualRange]="visualRange" (performancePeriodChanged)="selectionChange($event)">
+      </sales-performance-card> -->
+
+
+      <!-- <sales-by-time-card [timeBySale]="timeBySale" [visualRange]="visualRange"></sales-by-time-card> -->
+
+
+      <!-- <dx-chart id="chart" title="Hourly Sales" [dataSource]="timeBySale" [rotated]="false">
+        <dxi-series color="#79cac4" type="bar" argumentField="Hour" valueField="LastMonth">
+          <dxo-label [visible]="true" backgroundColor="#c18e92"></dxo-label>
+        </dxi-series>
+
+        <dxi-series valueField="LastMonth" argumentField="Hour" type="bar">
+          <dxo-label [visible]="true" backgroundColor="#c18e92"></dxo-label>
+        </dxi-series>
+
+        <dxo-argument-axis>
+          <dxo-label [customizeText]="customizeText"></dxo-label>
+        </dxo-argument-axis>
+        <dxi-value-axis>
+          <dxo-tick [visible]="false"></dxo-tick>
+          <dxo-label [visible]="false"></dxo-label>
+        </dxi-value-axis>
+        <dxo-export [enabled]="true"></dxo-export>
+        <dxo-legend [visible]="false"></dxo-legend>
+      </dx-chart> -->
+
+
+    </div>
+
+
+    <!-- <div class="cards">
+      <sale-type-analysis-card titleText="Sale Type Analysis" [data]="salesTypeData"
+        [totalSale]="totalSaleValue" [columns]="orderColumns"></sale-type-analysis-card>
+      <sale-type-analysis-card titleText="Tax Analysis" [data]="taxData" [columns]="taxColumns"></sale-type-analysis-card>
+      <sale-type-analysis-card titleText="Paymode Analysis" [data]="paymodData" [columns]="payModeColumns"></sale-type-analysis-card>
+      <sale-type-analysis-card titleText="Discount  Analysis" [data]="discountData" [columns]="taxColumns"></sale-type-analysis-card>
+
+      <sale-type-analysis-card titleText="Top Sale Item" [data]="topSalesData" [columns]="topSaleColumn"></sale-type-analysis-card>
+      <sale-type-analysis-card titleText="Fraud Control" [data]="fraudControlData" [columns]="fraudColumns"></sale-type-analysis-card>
+    </div> -->
+
+  </div>
+</dx-scroll-view>
+
+
+<dx-load-panel container=".view-wrapper" [position]="{ of: '.content' }" [visible]="isLoading"
+  [showPane]="true"></dx-load-panel>

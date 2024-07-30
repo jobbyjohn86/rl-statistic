@@ -1,0 +1,98 @@
+<chart-card [titleText]="options.title" [footerText]="options.footer" (cardSettingClick)="cardSettingClick($event)" [isLoading]="options.isLoading">
+
+  <!-- <div class="pies-container"> -->
+  <dx-pie-chart *ngIf="options.class === 'pie'" class="pie" [palette]="options.palette"
+    [dataSource]="options.dataSource" sizeGroup="piesGroup" resolveLabelOverlapping="shift">
+    <dxi-series [argumentField]="options.argumentField" [valueField]="options.valueField">
+      <dxo-label [visible]="true" [format]="{ type: 'fixedPoint', precision: 0 }">
+        <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+      </dxo-label>
+      <!-- <dxo-label [visible]="true" format="percent"></dxo-label> -->
+    </dxi-series>
+    <!-- <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" itemTextPosition="right" [rowCount]="2">
+      </dxo-legend> -->
+    <dxo-size [height]="270"></dxo-size>
+  </dx-pie-chart>
+  <!-- </div> -->
+
+
+
+  <dx-chart *ngIf="options.class === 'chart'" id="chart" [dataSource]="options.dataSource">
+    <dxi-series [valueField]="options.seriesList[0].valueField" [name]="options.seriesList[0].name"></dxi-series>
+    <dxi-series [valueField]="options.seriesList[1].valueField" [name]="options.seriesList[1].name"></dxi-series>
+    <dxi-series [valueField]="options.seriesList[2].valueField" [name]="options.seriesList[2].name"></dxi-series>
+    <dxi-series [valueField]="options.seriesList[3].valueField" [name]="options.seriesList[3].name"></dxi-series>
+    <!-- <dxo-common-series-settings [argumentField]="options.argumentField" type="bar" hoverMode="allArgumentPoints"
+      selectionMode="allArgumentPoints">
+      <dxo-label [visible]="true" [format]="{
+        type: 'fixedPoint',
+        precision: 0
+      }">
+      </dxo-label>
+    </dxo-common-series-settings> -->
+    <dxo-common-series-settings [argumentField]="options.argumentField" type="stackedBar">
+    </dxo-common-series-settings>
+
+    <dxi-value-axis>
+      <dxo-label [format]="customInrFormat"></dxo-label>
+    </dxi-value-axis>
+
+    <!-- <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+    </dxo-legend> -->
+    <dxo-tooltip [enabled]="true" location="edge" [customizeTooltip]="customizeTooltip">
+    </dxo-tooltip>
+  </dx-chart>
+
+
+  <dx-chart *ngIf="options.class === 'bar'" id="chart" [dataSource]="options.dataSource" [palette]="options.palette" [rotated]="options.isRotated">
+    <dxi-series [valueField]="options.valueField" [name]="options.valueName"></dxi-series>
+    <dxo-common-series-settings [argumentField]="options.argumentField" type="bar" [barPadding]="0.5">
+    </dxo-common-series-settings>
+    <dxo-legend verticalAlignment="bottom"   horizontalAlignment="center"  [visible]="options.isLegentVisible">
+    </dxo-legend>
+    <!-- <dxi-value-axis>
+      <dxo-label [format]="currencyFormat"></dxo-label>
+    </dxi-value-axis> -->
+    <!-- verticalAlignment="bottom"   horizontalAlignment="center"-->
+    <!-- <dxo-export [enabled]="true"></dxo-export> -->
+    <!-- <dxo-title text="Oil Production">
+      <dxo-subtitle text="(in millions tonnes)"></dxo-subtitle>
+    </dxo-title> -->
+  </dx-chart>
+
+
+
+
+</chart-card>
+
+<!-- <chart-card [titleText]="titleText">
+
+  <dx-chart id="chart" [dataSource]="data" [rotated]="isRotated" [palette]="options.palette">
+    <dxi-series [valueField]="options.valueField" [name]="options.name" [stack]="options.stack">
+    </dxi-series>
+
+    <dxi-value-axis>
+      <dxo-title [text]="options.axisTitle"></dxo-title>
+    </dxi-value-axis>
+    <dxo-argument-axis [type]="'continuous'" [tickInterval]="1">
+      <dxo-title [text]="options.argTitle"></dxo-title>
+      <dxo-label *ngIf="options.argCustomField.length>0" [customizeText]="customizeText"></dxo-label>
+    </dxo-argument-axis>
+
+    <dxo-common-series-settings [argumentField]="options.argField" [type]="options.type">
+    </dxo-common-series-settings>
+
+    <dxi-value-axis>
+      <dxo-tick [visible]="false"></dxo-tick>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-value-axis>
+    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+    </dxo-legend>
+    <dxo-export [enabled]="false"></dxo-export>
+    <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    <dxo-size [height]="270"></dxo-size>
+
+  </dx-chart>
+
+
+</chart-card> -->

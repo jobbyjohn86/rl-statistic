@@ -1,0 +1,51 @@
+<card-analytics [titleText]="titleText" contentClass="sales-by-state grid" [isMenuVisible]="false">
+  <dx-data-grid [dataSource]="data" [height]="290" [loadPanel]="{ enabled: false }" [columns]="columns">
+
+    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+    <dxo-scrolling mode="virtual"></dxo-scrolling>
+    <dxo-sorting mode="none"></dxo-sorting>
+
+    <!-- <dxi-column caption="Particular" dataField="name"> </dxi-column>
+    <dxi-column caption="Orders" alignment="right" dataField="orders"> </dxi-column>
+    <dxi-column alignment="right" caption="Value" dataField="value" dataType="number" [format]="currencyFormat">
+    </dxi-column>
+
+    <dxi-column [visible]="totalSale>0" alignment="right" caption="Contribution (%)" dataField="value" [calculateCellValue]="contribution"></dxi-column> -->
+
+    <!-- --------------------------------- -->
+    <!-- <dxi-column alignment="left" caption="Orders" dataField="name" dataType="number" sortOrder="desc"
+      [hidingPriority]="2">
+    </dxi-column>
+
+    <dxi-column alignment="left" caption="Gross Sale" dataField="GrossSales" dataType="number" [format]="currencyFormat">
+    </dxi-column>
+    <dxi-column alignment="left" caption="Discount" dataField="Disc" dataType="number" [format]="currencyFormat">
+    </dxi-column>
+
+    <dxi-column alignment="left" caption="Tax" dataField="Tax" dataType="number" [format]="currencyFormat">
+    </dxi-column>
+    <dxi-column alignment="left" caption="Net Sale" dataField="NetSales" dataType="number" [format]="currencyFormat">
+    </dxi-column>
+    <dxi-column alignment="left" caption="Expense" dataField="Expense" dataType="number" [format]="currencyFormat">
+    </dxi-column> -->
+
+
+
+
+    <!-- <dxi-column alignment="left" caption="Sales" dataField="sales" name="percentN" format="percent"
+      [hidingPriority]="1">
+    </dxi-column> -->
+
+    <!-- <dxi-column alignment="left" caption="Contribution" dataField="percentage" name="percentB" cellTemplate="salesBullet"
+      cssClass="sales-bullet" [width]="200">
+    </dxi-column> -->
+
+    <!-- <div *dxTemplate="let cellInfo of 'salesBullet'">
+      <dx-bullet [showTarget]="false" [showZeroLevel]="false" [value]="cellInfo.data.percentage * 100"
+        [startScaleValue]="0" [endScaleValue]="100">
+        <dxo-tooltip [enabled]="false"></dxo-tooltip>
+        <dxo-size [width]="200" [height]="20"></dxo-size>
+      </dx-bullet>
+    </div> -->
+  </dx-data-grid>
+</card-analytics>

@@ -1,0 +1,232 @@
+<div class="ticker">
+  <!-- <div class="icon-wrapper" [class]="getIconClass()">
+    <i [class]="'dx-icon dx-icon-' + icon" *ngIf="count==0"></i>
+    <div class="trans-count" *ngIf="count>0">{{count}}</div>
+  </div> -->
+  <div class="middle">
+    <div class="title">
+      {{ titleText }}
+      <span class="icon-cog" (click)="onIconClick()">
+        <!-- <i class="fa fa-gear fa-spin"></i> -->
+      </span>
+
+    </div>
+    <div class="growth" *ngIf="showTotal">
+      <div *ngIf="isCount">
+        {{
+        total === null
+        ? (getTotal | apply: data)
+        : total
+        }}
+      </div>
+      <div *ngIf="!isCount">
+        {{
+        total === null
+        ? customInrFormat(getTotal | apply: data )
+        : total
+        }}
+      </div>
+      <!-- | currency: 'INR':'₹ ':'1.0-0' -->
+    </div>
+
+    <!-- <div class="total" *ngIf="!isContent">
+
+      <div *ngIf="isCount">
+        {{
+        total === null
+        ? (getTotal | apply: data)
+        : total
+        }}
+      </div>
+      <div *ngIf="!isCount">
+        {{
+        total === null
+        ? (getTotal | apply: data | currency: 'INR':'₹ ':'1.0-0')
+        : total
+        }}
+      </div>
+
+    </div> -->
+
+
+    <!-- <div class="title" *ngIf="isContent" style="margin-bottom: 2px; ">
+      <div *ngFor="let item of data | slice:0:3">
+        {{item['name']}} : <span class="right">{{(item['value'] | currency: 'INR':'₹ ':'1.0-0')}}</span>
+      </div>
+    </div> -->
+
+
+    <div *ngIf="!isGrouped" style="padding-top: 10px;">
+      <div class="info">
+        <div class="container" style="padding-top: 6px;">
+          <div class="row row-line">
+            <div class="column col-header" *ngFor="let item of cardColumns">{{item.caption}} </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="info" *ngFor="let item of details | slice:0:4">
+        <div *ngIf="isCount">
+          <!-- {{item['name']}}  -->
+          <div class="container">
+            <div class="row">
+              <div class="column">{{item['name']}}</div>
+              <div class="column">{{getNumberFormat(item['orders'])}}</div>
+              <div class="column">{{(item['value'])}}</div>
+              <div class="column" >{{(item['ticket'])}}</div>
+<!-- *ngIf="item['ticket']" -->
+
+              <!-- <span>{{item['name']}} </span>
+              <span class="center">{{(item['orders'])}}</span>
+              <span>{{(item['value'])}}</span> -->
+            </div>
+          </div>
+          <!-- <span class="right">{{(item['value'])}}</span> -->
+        </div>
+        <div *ngIf="!isCount">
+          <div class="container">
+            <div class="row">
+              <div class="column-3">{{item['name']}} </div>
+              <div class="column-3">{{getNumberFormat((item['orders']))}}</div>
+              <div class="column-3">{{customInrFormat(item['value'])}}</div>
+            </div>
+          </div>
+          <!-- {{item['name']}} <span class="right">{{(item['value'] | currency: 'INR':'₹ ':'1.0-0')}}</span> -->
+        </div>
+        <!-- {{item['name']}} <span class="right">{{(item['value'] | currency: 'INR':'₹ ':'1.0-0')}}</span> -->
+      </div>
+
+      <!-- <div class="info" *ngIf="details.length<4">
+        <br style ="line-height:20px;"> 
+      </div> -->
+
+    </div>
+
+
+    <div *ngIf="isGrouped" style="padding-top: 10px;">
+      <div class="info">
+        <div class="container" style="padding-top: 6px;">
+          <div class="row row-line">
+            <div class="column col-header" *ngFor="let item of cardColumns">{{item.caption}} </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info" *ngFor="let item of groupData | slice:0:4">
+        <div class="container">
+          <div class="row">
+            <div class="column">{{item['name']}}</div>
+            <div class="column">{{item['count']}}</div>
+            <div class="column">{{item['orders']}}</div>
+            <div class="column">{{(item['value'] | currency: 'INR':'₹ ':'1.0-0')}}</div>
+          </div>
+        </div>
+        <!-- {{item['name']}} <span class="right">{{(item['value'] | currency: 'INR':'₹ ':'1.0-0')}}</span> -->
+      </div>
+
+      <!-- <div class="info" *ngIf="groupData.length<4">
+        <br *ngFor="let item of blankRow"  style ="line-height:20px;"> 
+      </div> -->
+
+    </div>
+
+
+    <!-- [@hoverTextChange]="isHovered ? 'hovered' : 'default'" 
+    (mouseover)="onMouseOver()" 
+    (mouseout)="onMouseOut()" -->
+    <div class="footer-box">
+      <div class="lp-9" (click)="onFooterClick()">{{isHovered==true? hoverText :footerText +' ' +(count>0? count:'')}}
+      </div>
+      <div class="menu">
+        <div class="info">
+
+          <div *ngIf="percentage !== 0" class="percentage" [class]="percentage > 0 ? 'positive': 'negative'">
+            <div [class]="'dx-icon-'+ (percentage > 0 ? 'spinup' : 'spindown')"></div>
+            <i class="value"></i>
+            <span>{{ abs(percentage) }}%</span>
+          </div>
+
+
+          <div>
+            <card-view [visible]="isDetailsVisible" [class]="isMenuVisible ==false ? 'right': ''" [dataSource]="details"
+              [isGrouped]="isGrouped" [isCount]="isCount" [columns]="columns"></card-view>
+            <card-menu [visible]="isMenuVisible" [items]="menuItems" [class]="isMenuVisible ==true ? 'right': ''">
+            </card-menu>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+    <span class="date-text"><strong>{{startDate}} {{startDate?.length>0 ? '-':''}} {{endDate}}</strong></span>
+
+
+  </div>
+
+
+  <!-- <i class="fas fa-clock"></i> -->
+
+
+  <!-- <div *ngIf="percentage !== 0" class="percentage" [class]="percentage > 0 ? 'positive': 'negative'">
+    <div [class]="'dx-icon-'+ (percentage > 0 ? 'spinup' : 'spindown')"></div>
+    <i class="value"></i>
+    <span>{{ abs(percentage) }}%</span>
+
+  </div> -->
+
+
+  <!-- <div class="menu info percentage">11</div> -->
+
+  <!-- <div class="menu">
+    <div class="info">
+
+      <div *ngIf="percentage !== 0" class="percentage" [class]="percentage > 0 ? 'positive': 'negative'">
+        <div [class]="'dx-icon-'+ (percentage > 0 ? 'spinup' : 'spindown')"></div>
+        <i class="value"></i>
+        <span>{{ abs(percentage) }}%</span>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <card-view [visible]="isDetailsVisible" [class]="isMenuVisible ==false ? 'right': ''" [dataSource]="details"
+          [isGrouped]="isGrouped" [isCount]="isCount"></card-view>
+        <card-menu [visible]="isMenuVisible" [items]="menuItems" [class]="isMenuVisible ==true ? 'right': ''">
+        </card-menu>
+      </div>
+
+
+    </div>
+  </div> -->
+
+
+
+
+
+
+
+
+
+  <!-- <div class="total">
+    <card-menu [visible]="isMenuVisible" [items]="menuItems"> </card-menu>
+  </div> -->
+
+
+</div>
+
+
+<dx-popup [visible]="isDateRangeVisble" title="Select Date Range" [width]="400" [height]="220" [showCloseButton]="true"
+  (onHiding)="onPopupHiding($event)">
+  <div (click)="onDateContainerClick($event, dateRangeBox)">
+    <dx-date-range-box #dateRangeBox displayFormat="dd/MM/yyyy" [startDate]="startDate" [endDate]="endDate"
+      [showClearButton]="true" [useMaskBehavior]="true" [openOnFieldClick]="false"
+      (onValueChanged)="handleValueChange($event)" timezone="Asia/Calcutta">
+    </dx-date-range-box>
+  </div>
+
+
+  <div class="full-width-button">
+    <dx-button text="Save" type="default" (onClick)="onSaveClick()" style="background: rgb(128, 128, 128);"></dx-button>
+  </div>
+</dx-popup>

@@ -1,0 +1,89 @@
+<form class="login-form" (submit)="onSubmit($event)" id="myForm">
+
+  <dx-form [formData]="formData" [disabled]="loading" [showColonAfterLabel]="true" [showRequiredMark]="false"
+    [visible]="false">
+
+    <dxi-item dataField="email" editorType="dxTextBox" [editorOptions]="{
+        placeholder: 'Username',
+        stylingMode: 'filled',
+        mode: 'text',
+        value: defaultAuthData?.data?.email
+      }">
+      <dxi-validation-rule type="required" message="Username Required"></dxi-validation-rule>
+      <!-- <dxi-validation-rule
+        message="Username is invalid"
+      ></dxi-validation-rule> -->
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="password" editorType="dxTextBox" [editorOptions]="passwordEditorOptions">
+      <dxi-validation-rule type="required" message="Password is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="rememberMe" editorType="dxCheckBox" [editorOptions]="{
+        text: 'Remember me',
+        elementAttr: { class: 'form-text' }
+      }">
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item itemType="button">
+      <dxo-button-options width="100%" type="default" cssClass="btn-sign-in" [useSubmitBehavior]="true"
+        [template]="'signInTemplate'">
+      </dxo-button-options>
+    </dxi-item>
+
+    <ng-container *dxTemplate="let item of 'signInTemplate'">
+      <span class="dx-button-text">
+        <ng-container *ngIf="loading; else notLoading">
+          <dx-load-indicator width="24px" height="24px" [visible]="true"></dx-load-indicator>
+        </ng-container>
+        <ng-template #notLoading>Sign In</ng-template>
+      </span>
+    </ng-container>
+  </dx-form>
+  <dx-button class="btn-create-account" text="Change RCID" [stylingMode]="btnStylingMode" width="100%" [visible]="false"
+    (onClick)="updateRCID()">
+  </dx-button>
+</form>
+
+
+<!-- <div class="header">
+  <div class="loading-container">
+    <span class="title-error">Unable to Load the page</span>
+  </div>
+</div> -->
+
+
+<div class="error-container" *ngIf="!isPageValid">
+  <h1>Oops! Something went wrong.</h1>
+  <p>We're sorry, but the page you were looking for cannot be found or an error occurred while loading the page.</p>
+  <!-- <a href="/" class="button">Go to Homepage</a> -->
+</div>
+
+
+<div class="form" *ngIf="isPageValid">
+
+  <div class="loading-container">
+    <div class="loading-text">
+      <span class="description">{{ loadingText }}</span>
+      <span class="dot">.</span>
+      <span class="dot">.</span>
+      <span class="dot">.</span>
+    </div>
+  </div>
+
+
+  <!-- <dx-progress-bar [value]="progress" [showStatus]="true" statusFormat="percent"></dx-progress-bar> -->
+
+  <dx-progress-bar [value]="progressValue" [showStatus]="false">
+  </dx-progress-bar>
+
+
+  <!-- <div class="progress-info"> Time left {{ seconds | time }} </div>
+  <dx-progress-bar #progressBar id="progress-bar-status" width="100%" [elementAttr]="{ 'aria-label': 'Progress Bar' }"
+    [class.complete]="progressBar.value == maxValue" [min]="0" [max]="maxValue" [statusFormat]="format"
+    [value]="maxValue - seconds">
+  </dx-progress-bar> -->
+</div>

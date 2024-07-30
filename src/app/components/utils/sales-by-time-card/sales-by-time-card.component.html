@@ -1,0 +1,413 @@
+<chart-card [titleText]="options.title" (cardSettingClick)="cardSettingClick($event)" [isLoading]="options.isLoading">
+
+  <!-- <div *ngIf="options.dataSource.length>0"> -->
+
+  <div *ngIf="options.chartType=== ChartEnum.bar" [ngClass]="options.dataSource.length == 0? 'empty':''">
+
+    <dx-chart [id]="options.chart" [dataSource]="options.dataSource" [rotated]="options.isRotated"
+      [palette]="options.palette">
+      <dxi-series [valueField]="options.valueField" [name]="options.valueName" [stack]="options.stack"
+        [color]="options.color">
+      </dxi-series>
+      <dxi-value-axis>
+        <dxo-title [text]="options.axisTitle"></dxo-title>
+        <dxo-label [format]="customInrFormat"></dxo-label>
+      </dxi-value-axis>
+      <dxo-argument-axis [type]="'continuous'" [tickInterval]="1">
+        <dxo-title [text]="options.argTitle"></dxo-title>
+        <dxo-label *ngIf="options.argCustomField.length>0" [customizeText]="customizeText"></dxo-label>
+      </dxo-argument-axis>
+      <dxo-common-series-settings [argumentField]="options.argField" [type]="options.type">
+      </dxo-common-series-settings>
+      <!-- <dxi-value-axis>
+        <dxo-tick [visible]="false"></dxo-tick>
+        <dxo-label [visible]="false"></dxo-label>
+      </dxi-value-axis> -->
+      <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" [visible]="false">
+      </dxo-legend>
+      <dxo-export [enabled]="false"></dxo-export>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+      <dxo-size [height]="270"></dxo-size>
+    </dx-chart>
+  </div>
+
+  <div *ngIf="options.chartType=== ChartEnum.pie" [ngClass]="options.dataSource.length == 0? 'empty':''">
+    <dx-pie-chart [id]="options.chart" [palette]="options.palette" [dataSource]="options.dataSource"
+      resolveLabelOverlapping="shift">
+      <!-- <dxo-legend orientation="horizontal" itemTextPosition="right" horizontalAlignment="center"
+          verticalAlignment="bottom" [columnCount]="4"></dxo-legend> -->
+      <dxo-export [enabled]="false"></dxo-export>
+      <dxi-series [argumentField]="options.argField" [valueField]="options.valueField">
+        <dxo-label *ngIf="options.argCustomField.length>0" [customizeText]="customizeText" [visible]="true"
+          position="columns" [customizeText]="options.argCustomField">
+          <dxo-font [size]="12"></dxo-font>
+          <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+        </dxo-label>
+      </dxi-series>
+      <dxo-size [height]="270"></dxo-size>
+    </dx-pie-chart>
+  </div>
+
+  <div *ngIf="options.chartType=== ChartEnum.doughnut" [ngClass]="options.dataSource.length == 0? 'empty':''">
+    <dx-pie-chart id="pie" [palette]="chartPalette" [type]="options.type" [innerRadius]="0.5"
+      [dataSource]="options.dataSource">
+      <dxi-series [name]="options.valueName" [argumentField]="options.argField" [valueField]="options.valueField">
+        <dxo-small-values-grouping mode="topN" [topCount]="3"></dxo-small-values-grouping>
+        <dxo-label *ngIf="options.argCustomField.length>0" [customizeText]="customizeText" [visible]="true"
+          format="fixedPoint" [customizeText]="options.argCustomField">
+          <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+        </dxo-label>
+      </dxi-series>
+    </dx-pie-chart>
+  </div>
+
+  <div *ngIf="options.chartType=== ChartEnum.funnel">
+
+    <!-- <dx-funnel [id]="options.chart" [dataSource]="options.dataSource" [argumentField]="options.argField" [valueField]="options.valueField" [palette]="options.palette">
+        <dxo-tooltip [enabled]="true" format="2"> </dxo-tooltip>
+        <dxo-item>
+          <dxo-border [visible]="true"> </dxo-border>
+        </dxo-item>
+        <dxo-label [visible]="true" position="inside" backgroundColor="none" ></dxo-label>
+      </dx-funnel>
+      -->
+
+    <!-- [ngClass]="options.dataSource.length == 0? 'empty':'empty'"   [ngClass]="{empty: (options.dataSource.length | async) === 0 }"-->
+
+    <div *ngIf="options.id=='pyramid'" [ngClass]="options.dataSource.length == 0? 'empty':''">
+      <dx-funnel id="pyramid" [palette]="options.palette" [dataSource]="options.dataSource"
+        [argumentField]="options.argField" [valueField]="options.valueField" [inverted]="true" algorithm="dynamicHeight"
+        [sortData]="true" resolveLabelOverlapping="shift">
+        <dxo-tooltip [enabled]="true"></dxo-tooltip>
+        <dxo-item>
+          <dxo-border [visible]="true"></dxo-border>
+        </dxo-item>
+        <dxo-legend [visible]="true"></dxo-legend>
+        <dxo-label [visible]="true" horizontalAlignment="left" backgroundColor="none"
+          [customizeText]="customizeDepartmentLabel">
+          <dxo-font [size]="12"></dxo-font>
+        </dxo-label>
+        <dxo-size [height]="270"></dxo-size>
+      </dx-funnel>
+    </div>
+
+    <div *ngIf="options.id =='funnel'" [ngClass]="options.dataSource.length == 0? 'empty':''">
+      <dx-funnel id="funnel" [dataSource]="options.dataSource" [argumentField]="options.argField"
+        [valueField]="options.valueField" palette="Soft Pastel">
+        <dxo-tooltip [enabled]="true" format="2"> </dxo-tooltip>
+        <dxo-item>
+          <dxo-border [visible]="true"> </dxo-border>
+        </dxo-item>
+        <dxo-label [visible]="true" position="inside" backgroundColor="none"></dxo-label>
+        <dxo-size [height]="270"></dxo-size>
+        <dxo-legend [visible]="true"></dxo-legend>
+      </dx-funnel>
+    </div>
+
+
+
+    <!-- <dx-funnel [id]="options.chart"  [dataSource]="options.dataSource" [argumentField]="options.argField" [valueField]="options.valueField"  palette="Soft Pastel">
+        <dxo-tooltip [enabled]="true" format="2"> </dxo-tooltip>
+        <dxo-item>
+          <dxo-border [visible]="true"> </dxo-border>
+        </dxo-item> -->
+    <!-- <dxo-label [visible]="true" position="inside" backgroundColor="none" [customizeText]="customizeText"></dxo-label> -->
+    <!-- <dxo-size [height]="270"></dxo-size>
+      </dx-funnel> -->
+
+    <!-- <dx-funnel [id]="options.chart" [palette]="options.palette" [dataSource]="options.dataSource"
+        [argumentField]="options.argField" [valueField]="options.valueField" [inverted]="true" algorithm="dynamicHeight"
+        [sortData]="false">
+        <dxo-tooltip [enabled]="true"></dxo-tooltip>
+        <dxo-item>
+          <dxo-border [visible]="true"></dxo-border>
+        </dxo-item>
+        <dxo-legend [visible]="true"></dxo-legend>
+        <dxo-label [visible]="true" horizontalAlignment="left" backgroundColor="none">
+          <dxo-font [size]="12"></dxo-font>
+        </dxo-label>
+        <dxo-size [height]="270"></dxo-size>
+      </dx-funnel> -->
+  </div>
+
+  <div *ngIf="options.chartType === ChartEnum.line" [ngClass]="options.dataSource.length == 0? 'empty':''">
+    <dx-chart id="chart" [dataSource]="options.dataSource" [palette]="options.palette">
+      <dxi-series [argumentField]="options.argField" [valueField]="options.valueField"></dxi-series>
+      <dxi-value-axis>
+        <dxo-label [format]="customInrFormat"></dxo-label>
+      </dxi-value-axis>
+
+      <dxo-argument-axis>
+        <dxo-label wordWrap="none" overlappingBehavior="rotate"></dxo-label>
+      </dxo-argument-axis>
+      <dxo-legend [visible]="false"></dxo-legend>
+      <dxo-tooltip [enabled]="true" [customizeTooltip]="customiseSubGrpToolip"></dxo-tooltip>
+    </dx-chart>
+  </div>
+
+
+  <!-- </div> -->
+
+
+
+
+
+
+  <!-- ========================================== -->
+  <!-- bar -->
+  <div *ngIf="chartType === ChartEnum.sparkline">
+    <dx-chart id="chart" [dataSource]="data" [rotated]="isRotated" [palette]="options.palette">
+      <dxi-series [valueField]="options.valueField" [name]="options.name" [stack]="options.stack"
+        [color]="options.color">
+      </dxi-series>
+
+      <dxi-value-axis>
+        <dxo-title [text]="options.axisTitle"></dxo-title>
+      </dxi-value-axis>
+      <dxo-argument-axis [type]="'continuous'" [tickInterval]="1">
+        <dxo-title [text]="options.argTitle"></dxo-title>
+        <dxo-label *ngIf="options.argCustomField.length>0" [customizeText]="customizeText"></dxo-label>
+      </dxo-argument-axis>
+
+      <dxo-common-series-settings [argumentField]="options.argField" [type]="options.type">
+      </dxo-common-series-settings>
+
+      <dxi-value-axis>
+        <dxo-tick [visible]="false"></dxo-tick>
+        <dxo-label [visible]="false"></dxo-label>
+      </dxi-value-axis>
+      <!-- <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+      </dxo-legend> -->
+      <dxo-export [enabled]="false"></dxo-export>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+      <dxo-size [height]="270"></dxo-size>
+
+    </dx-chart>
+
+
+  </div>
+
+  <!-- pie -->
+  <div *ngIf="chartType === ChartEnum.sparkline">
+
+    <dx-pie-chart id="pie" palette="bright" [dataSource]="data" resolveLabelOverlapping="shift">
+      <!-- <dxo-legend orientation="horizontal" itemTextPosition="right" horizontalAlignment="center"
+        verticalAlignment="bottom" [columnCount]="4"></dxo-legend> -->
+      <dxo-export [enabled]="false"></dxo-export>
+      <dxi-series argumentField="DepartmentName" valueField="TodayPercent">
+        <dxo-label [visible]="true" position="columns" [customizeText]="customizeDepartmentLabel">
+          <dxo-font [size]="12"></dxo-font>
+          <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+        </dxo-label>
+      </dxi-series>
+    </dx-pie-chart>
+
+
+
+  </div>
+
+
+  <!-- doughnut -->
+  <div *ngIf="chartType === ChartEnum.sparkline">
+    <dx-pie-chart id="pie" [palette]="chartPalette" type="doughnut" [innerRadius]="0.5" [dataSource]="data">
+      <!-- <dxo-title text="Imports/Exports of Goods and Services">
+        <dxo-subtitle text="(billion US$, 2012)"></dxo-subtitle>
+      </dxo-title> -->
+      <!-- <dxo-legend [visible]="true" horizontalAlignment="center" verticalAlignment="bottom"></dxo-legend> -->
+      <!-- <dxo-export [enabled]="true"></dxo-export> -->
+      <!-- <dxo-common-series-settings>
+        <dxo-label [visible]="false"></dxo-label>
+      </dxo-common-series-settings> -->
+      <!-- <dxo-tooltip [enabled]="true" format="currency" [customizeTooltip]="customizeDepartmentLabel"></dxo-tooltip> -->
+      <!-- <dxi-series name="name" argumentField="name" valueField="value"></dxi-series> -->
+      <dxi-series name="name" argumentField="name" valueField="value">
+
+        <dxo-small-values-grouping mode="topN" [topCount]="3"></dxo-small-values-grouping>
+        <dxo-label [visible]="true" format="fixedPoint" [customizeText]="customizeDepartmentLabel">
+          <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+        </dxo-label>
+
+      </dxi-series>
+    </dx-pie-chart>
+  </div>
+
+
+  <!-- line -->
+  <div *ngIf="chartType===ChartEnum.sparkline">
+    <dx-chart id="chart" [dataSource]="data">
+      <dxi-series argumentField="SubGroupName" valueField="Today"></dxi-series>
+      <dxo-argument-axis>
+        <dxo-label wordWrap="none" overlappingBehavior="rotate"></dxo-label>
+      </dxo-argument-axis>
+      <dxo-legend [visible]="false"></dxo-legend>
+      <dxo-tooltip [enabled]="true" [customizeTooltip]="customiseSubGrpToolip"></dxo-tooltip>
+    </dx-chart>
+
+    <!-- <dx-chart id="chart" palette="Violet" [dataSource]="data">
+      <dxi-series valueField="TodayPercent" name="TodayPercent">
+      </dxi-series>
+      <dxo-common-series-settings #seriesSettings argumentField="TodayPercent" type="line">
+      </dxo-common-series-settings>
+      <dxo-margin [bottom]="20"></dxo-margin>
+      <dxo-argument-axis [valueMarginsEnabled]="false" discreteAxisDivisionMode="crossLabels">
+        <dxo-grid [visible]="true"></dxo-grid>
+      </dxo-argument-axis>
+      <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" itemTextPosition="bottom">
+      </dxo-legend>
+      <dxo-title text="Energy Consumption in 2004">
+        <dxo-subtitle text="(Millions of Tons, Oil Equivalent)"> </dxo-subtitle>
+      </dxo-title>
+      <dxo-export [enabled]="true"></dxo-export>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    </dx-chart> -->
+  </div>
+
+  <!-- tree -->
+  <div *ngIf="chartType===ChartEnum.sparkline">
+
+    <dx-chart palette="violet" [dataSource]="data">
+      <dxi-series valueField="Today" name="Value"></dxi-series>
+      <dxo-common-series-settings #seriesSettings argumentField="BrandName" type="spline">
+      </dxo-common-series-settings>
+      <dxo-margin [bottom]="20"></dxo-margin>
+      <dxo-common-axis-settings>
+        <dxo-grid [visible]="true"></dxo-grid>
+      </dxo-common-axis-settings>
+      <dxo-legend verticalAlignment="top" horizontalAlignment="right">
+      </dxo-legend>
+      <dxo-argument-axis [allowDecimals]="false" [axisDivisionFactor]="60">
+        <dxo-label>
+          <dxo-format type="decimal"></dxo-format>
+        </dxo-label>
+      </dxo-argument-axis>
+      <!-- <dxo-export [enabled]="true"></dxo-export> -->
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+      <dxo-size [height]="270"></dxo-size>
+    </dx-chart>
+
+  </div>
+
+
+  <!-- funnel -->
+  <div *ngIf="chartType===ChartEnum.sparkline">
+
+    <dx-funnel id="pyramid" palette="Harmony light" [dataSource]="data" argumentField="ProductGroupName"
+      valueField="TodayPercent" [inverted]="true" algorithm="dynamicHeight" [sortData]="false">
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+      <dxo-item>
+        <dxo-border [visible]="true"></dxo-border>
+      </dxo-item>
+      <dxo-legend [visible]="true"></dxo-legend>
+      <dxo-label [visible]="true" horizontalAlignment="left" backgroundColor="none">
+        <dxo-font [size]="12"></dxo-font>
+      </dxo-label>
+      <dxo-size [height]="270"></dxo-size>
+    </dx-funnel>
+
+    <!-- <dx-funnel id="funnel" [dataSource]="data" argumentField="argument" valueField="value" palette="Soft Pastel">
+      <dxo-title text="Website Conversions">
+        <dxo-margin [bottom]="30"></dxo-margin>
+      </dxo-title>
+      <dxo-export [enabled]="true"></dxo-export>
+      <dxo-tooltip [enabled]="true" [format]="fixedPoint"> </dxo-tooltip>
+      <dxo-item>
+        <dxo-border [visible]="true"> </dxo-border>
+      </dxo-item>
+      <dxo-label [visible]="true" position="inside" backgroundColor="none" [customizeText]="customizeText"></dxo-label>
+    </dx-funnel> -->
+
+
+  </div>
+
+</chart-card>
+
+
+
+<!-- <card-analytics titleText="Sale By Time"> -->
+
+
+<!-- <dxi-series valueField="LastMonth" name="Previous Month" stack="LastMonth">
+      <dxo-label [visible]="true"></dxo-label>
+    </dxi-series> -->
+<!-- <dxi-series valueField="maleolder" name="Male: 65 and older" stack="male">
+    </dxi-series>
+    <dxi-series valueField="femaleyoung" name="Female: 0-14" stack="female">
+    </dxi-series>
+    <dxi-series valueField="femalemiddle" name="Female: 15-64" stack="female">
+    </dxi-series>
+    <dxi-series valueField="femaleolder" name="Female: 65 and older" stack="female">
+    </dxi-series> -->
+
+<!-- <dxo-legend horizontalAlignment="right" columnCount="2" [customizeItems]="customizeItems" position="inside">
+      <dxo-border [visible]="true"></dxo-border>
+    </dxo-legend> -->
+
+<!-- <dx-chart [dataSource]="salesByDateAndCategory">
+    <dxo-argument-axis [visualRange]="visualRange"> </dxo-argument-axis>
+    <dxo-tooltip
+      [enabled]="true"
+      [customizeTooltip]="customiseToolip"
+    ></dxo-tooltip>
+    <dxo-series-template nameField="category"> </dxo-series-template>
+
+    <dxo-common-series-settings
+      argumentField="date"
+      valueField="total"
+      hoverMode="includePoints"
+    >
+      <dxo-point hoverMode="allArgumentPoints"></dxo-point>
+    </dxo-common-series-settings>
+
+    <dxo-argument-axis argumentType="datetime" [valueMarginsEnabled]="false">
+    </dxo-argument-axis>
+
+    <dxo-legend [visible]="false"></dxo-legend>
+
+    <dxo-size [height]="270"></dxo-size>
+  </dx-chart> -->
+
+<!-- </card-analytics> -->
+
+
+
+
+
+<!-- <chart-card>
+  <dx-chart id="chart" [dataSource]="timeBySale">
+    <dxi-series valueField="ThisMonth" name="This Month" stack="ThisMonth">
+    </dxi-series>
+    <dxi-series valueField="LastMonth" name="Previous Month" stack="LastMonth">
+    </dxi-series>
+    <dxi-value-axis>
+      <dxo-title text="Amount (₹)"></dxo-title>
+    </dxi-value-axis>
+    <dxo-argument-axis>
+      <dxo-title text="Time"></dxo-title>
+      <dxo-label [customizeText]="customizeText"></dxo-label>
+    </dxo-argument-axis>
+
+    <dxo-common-series-settings argumentField="Hour" type="stackedBar">
+    </dxo-common-series-settings>
+    <dxi-value-axis>
+      <dxo-tick [visible]="false"></dxo-tick>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-value-axis>
+
+    <dxo-export [enabled]="false"></dxo-export>
+    <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    <dxo-size [height]="270"></dxo-size>
+  </dx-chart>
+</chart-card> -->
+
+
+
+<!-- <div filter class="sales-filter">
+    <dx-drop-down-button
+      stylingMode="text"
+      [useSelectMode]="true"
+      [items]="groupByPeriods"
+      [selectedItemKey]="groupByPeriods[1]"
+      (onSelectionChanged)="onDropDownSelectionChange($event)"
+    >
+    </dx-drop-down-button>
+  </div> -->
