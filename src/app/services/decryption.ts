@@ -83,4 +83,39 @@ export class DecryptionService {
     }
 
 
+    // ==== new ========
+    private _key: string;
+    private _iv: string;
+
+    decryptObjectFromHex<T>(hex: string): T {
+        this._key = CryptoJS.enc.Hex.parse('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+        this._iv = CryptoJS.enc.Hex.parse('a3f5d1c5d4b69b4e3b4b5c3d4b4e3f3d'); 
+
+        try {
+            // Convert hex string to CryptoJS WordArray
+            const cipherBytes = CryptoJS.enc.Hex.parse(hex);
+
+            // Decrypt using AES-CBC
+            const decrypted = CryptoJS.AES.decrypt(
+                { ciphertext: cipherBytes } as CryptoJS.lib.CipherParams,
+                this._key,
+                {
+                    iv: this._iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                }
+            );
+
+            // Convert decrypted data to UTF-8 string
+            const jsonString = decrypted.toString(CryptoJS.enc.Utf8);
+
+            // Parse JSON to object
+            return JSON.parse(jsonString) as T;
+        } catch (error) {
+            console.error('Decryption failed:', error);
+            throw new Error('Failed to decrypt object');
+        }
+    }
+
+
 }

@@ -118,22 +118,22 @@ export class LoadProgressComponent implements OnInit {
         case HttpEventType.Response:
           this.progress = 100;
           // console.log(r.body);
-          if(r.body=="Error occured at stub while calling dataservice executemobidata"){
+          if (r.body == "Error occured at stub while calling dataservice executemobidata") {
             this.loading = false;
             this.isPageValid = false;
             notify(r.body, 'error', 2000);
           }
-          else{
+          else {
             if (r && r.body && r.body.ExecuteMobiDataResult[0].length > 0) {
               let defaultUser = this.authService.saveUserData(email, r.body.ExecuteMobiDataResult[0]);
               this.authService._user = { ...defaultUser, email };
               localStorage.setItem('user', JSON.stringify(this.authService._user));
               this.authService.getDataAfterLogin(defaultUser.userID, defaultUser.teamID, defaultUser.designationID).subscribe(x => {
-                
-  
+
+
                 // here financial period need to be change as same like in Mobi.
                 // let xx = eval(x.ExecuteMobiDataResult[7])[0].FinancialYear 
-                
+
                 // localStorage.setItem('fy', x.ExecuteMobiDataResult[7]);
                 this.setFinancialYear(x.ExecuteMobiDataResult[7]);
                 localStorage.setItem('location', x.ExecuteMobiDataResult[8]);
@@ -150,7 +150,7 @@ export class LoadProgressComponent implements OnInit {
               notify('Authentication Failed', 'error', 2000);
             }
           }
-          
+
           break;
         default:
           this.progress = 0;
@@ -190,7 +190,7 @@ export class LoadProgressComponent implements OnInit {
 
   }
 
-  setFinancialYear(dataForFinalcialYear:any){
+  setFinancialYear(dataForFinalcialYear: any) {
     var evaldata = eval(dataForFinalcialYear);
     var dateEnd = moment(eval(dataForFinalcialYear)[0].FinancialYear).add(1, 'year').subtract(1, 'day').format('YYYY/MM/DD'); //Date.create(eval(dataForFinalcialYear)[0].FinancialYear).addYears(1).addDays(-1).format('{MM}/{dd}/{yyyy}');
     var strFinancialYearStart = eval(dataForFinalcialYear)[0].FinancialYear + " 00:00";
@@ -199,18 +199,18 @@ export class LoadProgressComponent implements OnInit {
     var strFromDate = "";
     var strToDate = "";
     if (moment(strDate).format('MM') >= moment(strFinancialYearStart).format('MM') || moment(strFinancialYearStart).format('YYYY') == moment(strFinancialYearEnd).format('YYYY')) {
-      let _yrcount = parseInt(moment(strDate).format('YYYY'))-parseInt(moment(strFinancialYearStart).format('YYYY'));
-      strFromDate = moment(strFinancialYearStart).add(_yrcount,'year').format('YYYY/MM/DD');
+      let _yrcount = parseInt(moment(strDate).format('YYYY')) - parseInt(moment(strFinancialYearStart).format('YYYY'));
+      strFromDate = moment(strFinancialYearStart).add(_yrcount, 'year').format('YYYY/MM/DD');
     }
     else {
-      let _yrcount = parseInt(moment(strDate).format('YYYY'))-parseInt(moment(strFinancialYearStart).format('YYYY'));
-        strFromDate = moment(strFinancialYearStart).subtract(_yrcount - 1,'year').format('YYYY/MM/DD');
+      let _yrcount = parseInt(moment(strDate).format('YYYY')) - parseInt(moment(strFinancialYearStart).format('YYYY'));
+      strFromDate = moment(strFinancialYearStart).subtract(_yrcount - 1, 'year').format('YYYY/MM/DD');
     }
-    strToDate = moment(strFromDate).add(1,'year').add(-1,'day').format('YYYY/MM/DD');
-    sessionStorage.setItem('EntryYearStart',strFromDate);
-    sessionStorage.setItem('EntryYearEnd',strToDate);
-    sessionStorage.setItem('financialYearStart',strFromDate);
-    sessionStorage.setItem('financialYearEnd',strToDate);
+    strToDate = moment(strFromDate).add(1, 'year').add(-1, 'day').format('YYYY/MM/DD');
+    sessionStorage.setItem('EntryYearStart', strFromDate);
+    sessionStorage.setItem('EntryYearEnd', strToDate);
+    sessionStorage.setItem('financialYearStart', strFromDate);
+    sessionStorage.setItem('financialYearEnd', strToDate);
   }
 
 
@@ -229,39 +229,25 @@ export class LoadProgressComponent implements OnInit {
     // here validate the input and is there any error navigate to error page with detailed message.
     this.startMarquee();
 
+    // this.route.queryParams.subscribe(params => {
+    //   const encryptedData = params['data'];
+    //   if (encryptedData) {
+    //     let decryptedData = this.decryptionService.decrypt(encryptedData);
+    //     console.log('Decrypted:', decryptedData); // ✅ this works fine
+    //   }
+    // });
+
+    // return;
+
 
     this.route.queryParams.subscribe(params => {
       const encryptedData = params['data'];
       if (encryptedData) {
 
+        // just for testing the below code are changing
+        const decryptedData = this.decryptionService.decryptObjectFromHex<string>(decodeURIComponent(encryptedData));
+        //this.decryptionService.decrypt(encryptedData); //encryptedData;//
 
-
-        // const ciphertext = 'b/aRE4LG/uaJvCLYoQjpdywKouY7fjbzyjP9mErfQfu/OjsSlFCAu1EgtM8gmD8GurGMd6yr9O8uqN4U1tWLcQ'; // Your encrypted ciphertext
-        // const passPhrase = 'RanceLab';
-        // const saltValue = 'FusionRetail6';
-        // const hashAlgorithm = 'SHA1';
-        // const passwordIterations = 6;
-        // const initVector = 'A1B2C3D4E5F6G7H8';
-        // const keySize = 128;
-
-        // // const decryptedText = this.decryptionService.decryptWithParams(ciphertext);
-        // // console.log('Decrypted Text:', decryptedText);
-
-        // // const decryptedText = this.cryptoService.decrypt(ciphertext);
-
-        // this.cryptoService.decrypt(ciphertext)
-        //   .then(decryptedText => {
-        //     console.log('Decrypted Text:', decryptedText);
-        //   })
-        //   .catch(error => {
-        //     console.error('Decryption failed', error);
-        //   });
-
-        // // console.log('Decrypted Text:', decryptedText);
-
-
-        //=======================
-        const decryptedData = this.decryptionService.decrypt(encryptedData);
         let paramsValues = decryptedData.split("&");
         if (paramsValues[0].length > 0) {
           let _rcidString = paramsValues[0].split("=");

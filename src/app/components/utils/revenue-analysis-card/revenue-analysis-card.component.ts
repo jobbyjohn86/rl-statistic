@@ -43,6 +43,7 @@ export class RevenueAnalysisCardComponent implements OnInit {
     this.calcualateContr = this.calcualateContr.bind(this);
     this.calcualateRank = this.calcualateRank.bind(this);
     this.lastSync = this.lastSync.bind(this);
+    this.lastClosedOn = this.lastClosedOn.bind(this);
     // this.loadCardData = this.loadCardData.bind(this);
     // this.getSupportData = this.getSupportData.bind(this);
     // this.getTotalSale = this.getTotalSale.bind(this);
@@ -52,7 +53,7 @@ export class RevenueAnalysisCardComponent implements OnInit {
 
   calcualateContr(rowData: any) {
     let contr = (rowData.NetSales / this.totalSale) * 100;
-    return contr.toFixed(2);
+    return isNaN(contr)?0:contr.toFixed(2);
   }
 
   calcualateRank(rowData: any) {
@@ -67,6 +68,15 @@ export class RevenueAnalysisCardComponent implements OnInit {
     var datePipe = new DatePipe('en-IN');
     if (filterdata.length > 0) {
       let syncTime = datePipe.transform(filterdata[0]?.IPLastSend.replace('/Date(', '').replace(')/', ''), 'dd/MM/yyyy HH:mm');
+      return syncTime;
+    } else { return '' }
+  }
+
+  lastClosedOn(rowData: any){
+    let filterdata = this.supportData.filter(r => r.LocationID == rowData.LocationID);
+    var datePipe = new DatePipe('en-IN');
+    if (filterdata.length > 0) {
+      let syncTime = datePipe.transform(filterdata[0]?.LastClosedDay?.replace('/Date(', '').replace(')/', ''), 'dd/MM/yyyy HH:mm');
       return syncTime;
     } else { return '' }
   }
@@ -115,7 +125,8 @@ export class RevenueAnalysisCardComponent implements OnInit {
         switch (dataName) {
           case 'allLocationSale':
             this.data = JSON.parse(result.ExecuteMobiDataResult);
-            console.log(this.data);
+            // console.log(this.data);
+            this.cdr.detectChanges();
             break;
           case 'supportData':
             this.supportData = JSON.parse(result.ExecuteMobiDataResult[0]);
