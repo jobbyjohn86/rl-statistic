@@ -177,6 +177,8 @@ export class LoginFormComponent implements OnInit {
 
         //=======================
         const decryptedData = this.decryptionService.decrypt(encryptedData);
+        // const decryptedData = this.decryptionService.decryptObjectFromHex<string>(decodeURIComponent(encryptedData));
+
         let paramsValues = decryptedData.split("&");
         if (paramsValues[0].length > 0) {
           let _rcidString = paramsValues[0].split("=");

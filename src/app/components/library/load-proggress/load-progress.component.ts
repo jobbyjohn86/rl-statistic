@@ -247,6 +247,7 @@ export class LoadProgressComponent implements OnInit {
         // just for testing the below code are changing
         const decryptedData = this.decryptionService.decryptObjectFromHex<string>(decodeURIComponent(encryptedData));
         //this.decryptionService.decrypt(encryptedData); //encryptedData;//
+        console.log(decryptedData);
 
         let paramsValues = decryptedData.split("&");
         if (paramsValues[0].length > 0) {
