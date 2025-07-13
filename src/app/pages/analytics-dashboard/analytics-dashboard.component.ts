@@ -596,7 +596,7 @@ export class AnalyticsDashboardComponent implements OnInit {
 
     this.taxDiscountCardOptions.groupData = this.taxAndDisc;
     this.taxDiscountCardOptions.dataTable = this.taxAndDiscDetails;
-    this.taxDiscountCardOptions.footerText = "Discointed Invoice:" + this.totalDicCount
+    this.taxDiscountCardOptions.footerText = "Discounted Invoice : " + this.totalDicCount
 
     // discData.map(r => {
     //   if (r.Disc > 0) {

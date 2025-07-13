@@ -90,7 +90,7 @@ export class SaleCardComponent implements OnInit, OnChanges {
           this.getPurchaseDetails(JSON.parse(result.ExecuteMobiDataResult[0])[2], startDate, endDate);
           let purchaseReturn = JSON.parse(result.ExecuteMobiDataResult[0])[3];
           if (purchaseReturn) {
-            this.cardOptions.footerText = "Return:" + purchaseReturn?.TodayMemo + "| Amount: " + purchaseReturn?.TodayAmt;
+            this.cardOptions.footerText = "Return : " + purchaseReturn?.TodayMemo + " | Amount : " + this.service.customInrFormat(purchaseReturn?.TodayAmt);//purchaseReturn?.TodayAmt;
           } else {
             this.cardOptions.footerText = "Return: 0 | Amount: 0";
           }
@@ -288,7 +288,7 @@ export class SaleCardComponent implements OnInit, OnChanges {
         let _amt = filterData.filter(item => item.SaleMode === x.name).reduce((acc, curr) => acc + curr.TodayAmt, 0)
         let _contr = (_amt / sum) * 100;
         let _tickets = (x.value / _count).toFixed(2);
-        orderDetails.push({ name: x.name, orders: _count, value: x.value, ticket: parseFloat(_tickets), contribution: parseFloat(_contr.toFixed(2)) })
+        orderDetails.push({ name: x.name, orders: _count, value: x.value, ticket: parseFloat(_tickets).toFixed(2), contribution: parseFloat(_contr.toFixed(2)) })
         orderDetails = orderDetails.sort((a, b) => b.value - a.value)
       });
 
@@ -391,7 +391,7 @@ export class SaleCardComponent implements OnInit, OnChanges {
     }
     this.cardOptions.groupData = taxAndDisc;
     this.cardOptions.dataTable = taxAndDiscDetails;
-    this.cardOptions.footerText = "Discointed Invoice:" + totalDicCount
+    this.cardOptions.footerText = "Discounted Invoice : " + totalDicCount
     this.cardOptions.isLoading = false;
   }
 
