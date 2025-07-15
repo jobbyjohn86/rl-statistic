@@ -216,6 +216,46 @@ export const preLayoutLocation:any=[
             "method": "getRatioAnalysis"
           }
         ]
+      },
+      {
+        "items": [
+          {
+            "id": 23,
+            "name": "Supplier Perfomance",
+            "color": "purple",
+            "method": "getSupplierStatement"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "id": 4,
+            "name": "Payment Mode",
+            "color": "yellow",
+            "method": "getSaleByMOP"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "id": 5,
+            "name": "Tax & Discount",
+            "color": "purple",
+            "method": "getTaxAndDisount"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "id": 24,
+            "name": "Sale By Shift",
+            "color": "purple",
+            "method": "getSalesByShift"
+          }
+        ]
       }
     ]
   },
@@ -339,48 +379,48 @@ export const preLayoutLocation:any=[
       }
     ]
   },
-  {
-    "columns": [
-      {
-        "items": [
-          {
-            "id": 23,
-            "name": "Supplier Perfomance",
-            "color": "purple",
-            "method": "getSupplierStatement"
-          }
-        ]
-      },
-      {
-        "items": [
-          {
-            "id": 4,
-            "name": "Payment Mode",
-            "color": "yellow",
-            "method": "getSaleByMOP"
-          }
-        ]
-      },
-      {
-        "items": [
-          {
-            "id": 5,
-            "name": "Tax & Discount",
-            "color": "purple",
-            "method": "getTaxAndDisount"
-          }
-        ]
-      },
-      {
-        "items": [
-          {
-            "id": 24,
-            "name": "Sale By Shift",
-            "color": "purple",
-            "method": "getSalesByShift"
-          }
-        ]
-      }
-    ]
-  }
+  // {
+  //   "columns": [
+  //     {
+  //       "items": [
+  //         {
+  //           "id": 23,
+  //           "name": "Supplier Perfomance",
+  //           "color": "purple",
+  //           "method": "getSupplierStatement"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "items": [
+  //         {
+  //           "id": 4,
+  //           "name": "Payment Mode",
+  //           "color": "yellow",
+  //           "method": "getSaleByMOP"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "items": [
+  //         {
+  //           "id": 5,
+  //           "name": "Tax & Discount",
+  //           "color": "purple",
+  //           "method": "getTaxAndDisount"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "items": [
+  //         {
+  //           "id": 24,
+  //           "name": "Sale By Shift",
+  //           "color": "purple",
+  //           "method": "getSalesByShift"
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // }
 ];
